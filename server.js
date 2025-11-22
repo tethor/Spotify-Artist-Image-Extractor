@@ -180,9 +180,9 @@ app.post('/api/extract-artist-image', async (req, res) => {
         } catch (error) {
           console.error('❌ Browserless.io failed:', error.message);
           
-          // Si falla por auth, intentar local como fallback
-          if (error.message && error.message.includes('401')) {
-            console.log('🔄 Browserless.io auth failed, trying local Puppeteer fallback...');
+          // Si falla por auth (401 o 403), intentar local como fallback
+          if (error.message && (error.message.includes('401') || error.message.includes('403'))) {
+            console.log('🔄 Browserless.io auth/authorization failed, trying local Puppeteer fallback...');
             
             // Guardar token para restaurarlo después
             const savedToken = process.env.BROWSERLESS_TOKEN;

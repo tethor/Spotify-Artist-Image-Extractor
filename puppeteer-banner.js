@@ -134,9 +134,9 @@ async function extractBannerWithPuppeteer(artistUrl) {
   } catch (error) {
     console.error('Error extracting banner with Puppeteer:', error);
     
-    // Detectar error de autenticación de Browserless
-    if (error.message && error.message.includes('Unexpected server response: 401')) {
-      console.error('❌ Browserless.io authentication failed - Invalid token');
+    // Detectar errores de autenticación/autorización de Browserless (401 y 403)
+    if (error.message && (error.message.includes('Unexpected server response: 401') || error.message.includes('Unexpected server response: 403'))) {
+      console.error('❌ Browserless.io authentication/authorization failed - Token invalid or unauthorized');
     }
     
     if (browser) {
