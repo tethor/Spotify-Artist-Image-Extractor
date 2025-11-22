@@ -402,14 +402,52 @@ button:disabled {
     flex-direction: column;
   }
 
-  button#extractBtn {
-    border-left: none;
-    border-top: var(--border-width) solid #000;
-    padding: 15px;
-  }
+
 
   .image-type-selector {
     flex-direction: column;
     gap: 10px;
   }
+
+  .separator {
+    color: #555;
+  }
+}
+
+/* Footer */
+footer {
+  margin-top: 40px;
+  border-top: var(--border-width) solid #000;
+  padding: 20px;
+  background: #000;
+  color: #fff;
+  text-align: center;
+}
+
+.footer-content {
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.brand-link,
+.social-link {
+  color: var(--accent-primary);
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 8px;
+  transition: all 0.2s;
+}
+
+.brand-link:hover,
+.social-link:hover {
+  background: var(--accent-primary);
+  color: #000;
+  box-shadow: 4px 4px 0px #fff;
+  transform: translate(-2px, -2px);
 }

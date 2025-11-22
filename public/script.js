@@ -39,7 +39,8 @@ document.addEventListener('DOMContentLoaded', function () {
       web_scraper: 'WEB SCRAPER',
       local_fallback: 'LOCAL SCRAPER (FALLBACK)',
       genres: 'GENRES',
-      followers: 'FOLLOWERS'
+      followers: 'FOLLOWERS',
+      created_by: 'CREATED BY'
     },
     es: {
       title: 'Spotify<br>Extractor',
@@ -68,7 +69,8 @@ document.addEventListener('DOMContentLoaded', function () {
       web_scraper: 'WEB SCRAPER',
       local_fallback: 'SCRAPER LOCAL (FALLBACK)',
       genres: 'GÉNEROS',
-      followers: 'SEGUIDORES'
+      followers: 'SEGUIDORES',
+      created_by: 'CREADO POR'
     }
   };
 
