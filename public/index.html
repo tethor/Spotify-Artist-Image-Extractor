@@ -1,61 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SPOTIFY_EXTRACTOR // V1.0</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <div class="container">
     <header>
-      <h1>Spotify<br>Extractor</h1>
-      <div class="subtitle">Asset Retrieval Tool</div>
+      <div class="lang-switch">
+        <button id="langBtn" class="lang-btn">EN/ES</button>
+      </div>
+      <h1 data-i18n="title">Spotify<br>Extractor</h1>
+      <div class="subtitle" data-i18n="subtitle">Image Extraction Tool</div>
     </header>
-    
+
     <main>
       <section class="input-section">
         <div class="input-group">
-          <input type="url" id="spotifyUrl" placeholder="PASTE_SPOTIFY_URL_HERE..." autocomplete="off">
-          <button id="extractBtn">EXTRACT IMAGE</button>
+          <input type="url" id="spotifyUrl" placeholder="PASTE_SPOTIFY_URL_HERE..." autocomplete="off"
+            data-i18n-placeholder="input_placeholder">
+          <button id="extractBtn" data-i18n="extract_btn">EXTRACT IMAGE</button>
         </div>
-        
+
         <div class="image-type-selector">
           <label class="radio-label">
             <input type="radio" name="imageType" value="mobile" checked>
             <div class="radio-indicator"></div>
-            <span>Mobile (Profile)</span>
+            <span data-i18n="mobile_option">Mobile (Profile)</span>
           </label>
           <label class="radio-label">
             <input type="radio" name="imageType" value="desktop">
             <div class="radio-indicator"></div>
-            <span>Desktop (Banner)</span>
+            <span data-i18n="desktop_option">Desktop (Banner)</span>
           </label>
         </div>
-        
+
         <div class="instructions">
-          <h3>// INSTRUCTIONS</h3>
+          <h3 data-i18n="instructions_title">// INSTRUCTIONS</h3>
           <ul>
-            <li>COPY ARTIST URL FROM SPOTIFY</li>
-            <li>PASTE INTO INPUT FIELD</li>
-            <li>SELECT ASSET TYPE</li>
-            <li>EXECUTE EXTRACTION</li>
+            <li data-i18n="instr_1">COPY ARTIST URL FROM SPOTIFY</li>
+            <li data-i18n="instr_2">PASTE INTO INPUT FIELD</li>
+            <li data-i18n="instr_3">SELECT ASSET TYPE</li>
+            <li data-i18n="instr_4">EXECUTE EXTRACTION</li>
           </ul>
           <p style="margin-top: 15px; font-size: 0.8rem; text-transform: uppercase;">
-            <strong>NOTE:</strong> DESKTOP EXTRACTION USES HEADLESS BROWSER. MAY BE SLOWER.
+            <strong data-i18n="note_label">NOTE:</strong> <span data-i18n="note_text">DESKTOP EXTRACTION USES HEADLESS
+              BROWSER. MAY BE SLOWER.</span>
+          </p>
+          <p style="margin-top: 10px; font-size: 0.8rem; border-top: 1px dashed #000; padding-top: 10px;">
+            <strong data-i18n="example_label">EXAMPLE URL:</strong>
+            <code style="display: block; margin-top: 5px; word-break: break-all; cursor: pointer;" id="exampleUrl"
+              title="Click to copy">https://open.spotify.com/artist/3Nrfpe0tUJi4K4DXYWgMUX</code>
           </p>
         </div>
       </section>
-      
-      <div class="loading" id="loading">
+
+      <div class="loading" id="loading" data-i18n="loading">
         // PROCESSING REQUEST...
       </div>
-      
+
       <div class="error" id="error"></div>
-      
+
       <section class="result-section" id="resultSection">
         <div class="artist-info">
           <h2 class="artist-name" id="artistName"></h2>
@@ -68,4 +81,5 @@
 
   <script src="script.js"></script>
 </body>
+
 </html>

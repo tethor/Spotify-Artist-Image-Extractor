@@ -1,0 +1,14 @@
+services:
+- type: web
+  name: spotify-artist-image-extractor
+  env: node
+  repo: https://github.com/tethor/Spotify-Artist-Image-Extractor
+  branch: main
+  buildCommand: 'npm install'
+  startCommand: 'npm start'
+  envVars:
+    - key: SPOTIFY_CLIENT_ID
+      value: a64382c032ee4aeeaf28a89fc6c316f6
+    - key: SPOTIFY_CLIENT_SECRET
+      value: 6af801878f38476db08e1bcc75366865
+  autoDeploy: true
