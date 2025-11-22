@@ -118,7 +118,7 @@ main {
   box-shadow: 4px 4px 0px #000;
 }
 
-input[type="url"] {
+input#spotifyUrl {
   flex: 1;
   padding: 20px;
   border: none;
@@ -129,13 +129,13 @@ input[type="url"] {
   outline: none;
 }
 
-input[type="url"]::placeholder {
+input#spotifyUrl::placeholder {
   color: #888;
   text-transform: uppercase;
 }
 
 button#extractBtn {
-  padding: 0 30px;
+  padding: 0 40px;
   background: #000;
   color: #fff;
   border: none;
@@ -145,12 +145,15 @@ button#extractBtn {
   text-transform: uppercase;
   cursor: pointer;
   font-size: 1.1rem;
-  transition: background 0.2s;
+  transition: all 0.2s ease;
+  letter-spacing: 1px;
 }
 
 button#extractBtn:hover {
-  background: var(--accent-secondary);
+  background: var(--accent-primary);
   color: #000;
+  padding-left: 50px;
+  padding-right: 50px;
 }
 
 button:disabled {
@@ -331,6 +334,8 @@ button:disabled {
 
 .image-card img {
   width: 100%;
+  height: auto;
+  object-fit: contain;
   border: 2px solid #000;
   display: block;
   margin-bottom: 15px;
