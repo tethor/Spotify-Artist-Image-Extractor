@@ -1,4 +1,5 @@
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
+const chromium = require('@sparticuz/chromium');
 
 /**
  * Extracts the banner image URL from a Spotify artist page using Puppeteer
@@ -17,18 +18,17 @@ async function extractBannerWithPuppeteer(artistUrl) {
     if (browserlessToken) {
       console.log('Using Browserless.io for banner extraction');
       browser = await puppeteer.connect({
-        browserWSEndpoint: `wss://chrome.browserless.io?token=${browserlessToken}`
+        browserWSEndpoint: `wss://production-sfo.browserless.io?token=${browserlessToken}`
       });
     } else {
-      console.log('BROWSERLESS_TOKEN not found, using local Puppeteer');
+      console.log('BROWSERLESS_TOKEN not found, using local Puppeteer with @sparticuz/chromium');
+      
+      // Usar Chromium optimizado para serverless
       browser = await puppeteer.launch({
-        headless: 'new',
-        args: [
-          '--no-sandbox',
-          '--disable-setuid-sandbox',
-          '--disable-dev-shm-usage',
-          '--disable-gpu'
-        ]
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath(),
+        headless: chromium.headless,
       });
     }
     
