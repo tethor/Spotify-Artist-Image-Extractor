@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spotify Artist Image Extractor</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #1db954, #191414);
+      color: white;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 20px;
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .subtitle {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .input-section {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 30px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .input-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    
+    input {
+      flex: 1;
+      padding: 15px;
+      border: none;
+      border-radius: 50px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-size: 1rem;
+      outline: none;
+      transition: background 0.3s;
+    }
+    
+    input:focus {
+      background: rgba(255, 255, 255, 0.15);
+    }
+    
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.6);
+    }
+    
+    button {
+      padding: 15px 25px;
+      background: #1db954;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: background 0.3s;
+    }
+    
+    button:hover {
+      background: #1ed760;
+    }
+    
+    button:disabled {
+      background: #535353;
+      cursor: not-allowed;
+    }
+    
+    .result-section {
+      display: none;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 30px;
+      border-radius: 10px;
+      margin-top: 30px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .artist-info {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .artist-name {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    
+    .artist-image-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin: 20px 0;
+    }
+    
+    .image-card {
+      text-align: center;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 15px;
+      border-radius: 8px;
+      width: 200px;
+    }
+    
+    .image-card img {
+      width: 100%;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+    
+    .image-size {
+      font-size: 0.9rem;
+      opacity: 0.8;
+      margin-top: 5px;
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 20px;
+      display: none;
+    }
+    
+    .error {
+      background: rgba(231, 76, 60, 0.3);
+      padding: 15px;
+      border-radius: 5px;
+      margin-top: 15px;
+      text-align: center;
+      display: none;
+    }
+    
+    .instructions {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+    
+    .instructions h3 {
+      margin-bottom: 10px;
+      color: #1db954;
+    }
+    
+    .instructions ul {
+      padding-left: 20px;
+    }
+    
+    .instructions li {
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+    
+    .instructions code {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    
+    @media (max-width: 600px) {
+      .input-group {
+        flex-direction: column;
+      }
+      
+      .image-card {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🎵 Spotify Artist Image Extractor</h1>
+      <p class="subtitle">Extract high-quality artist images from any Spotify artist link</p>
+    </header>
+    
+    <main>
+      <section class="input-section">
+        <h2>Enter Spotify Artist Link</h2>
+        <p>Paste any Spotify artist URL to extract their profile images</p>
+        
+        <div class="input-group">
+          <input type="url" id="spotifyUrl" placeholder="https://open.spotify.com/artist/..." autocomplete="off">
+          <button id="extractBtn">Extract Images</button>
+        </div>
+        
+        <div class="instructions">
+          <h3>How to use:</h3>
+          <ul>
+            <li>Go to an artist's page on Spotify</li>
+            <li>Copy the URL from your browser's address bar</li>
+            <li>Paste it in the input field above</li>
+            <li>Click "Extract Images" to get all available image sizes</li>
+          </ul>
+          <p><strong>Example:</strong> <code>https://open.spotify.com/artist/3Nrfpe0tUJi4K4DXYWgMUX</code> (Taylor Swift)</p>
+        </div>
+      </section>
+      
+      <div class="loading" id="loading">
+        <p>Extracting artist images... Please wait</p>
+      </div>
+      
+      <div class="error" id="error"></div>
+      
+      <section class="result-section" id="resultSection">
+        <h2>Artist Images</h2>
+        <div class="artist-info">
+          <h2 class="artist-name" id="artistName"></h2>
+          <p id="artistDetails"></p>
+        </div>
+        <div class="artist-image-container" id="imageContainer"></div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const spotifyUrlInput = document.getElementById('spotifyUrl');
+      const extractBtn = document.getElementById('extractBtn');
+      const loadingElement = document.getElementById('loading');
+      const errorElement = document.getElementById('error');
+      const resultSection = document.getElementById('resultSection');
+      const imageContainer = document.getElementById('imageContainer');
+      const artistNameElement = document.getElementById('artistName');
+      const artistDetailsElement = document.getElementById('artistDetails');
+      
+      extractBtn.addEventListener('click', extractArtistImages);
+      spotifyUrlInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          extractArtistImages();
+        }
+      });
+      
+      async function extractArtistImages() {
+        const spotifyUrl = spotifyUrlInput.value.trim();
+        
+        if (!spotifyUrl) {
+          showError('Please enter a Spotify URL');
+          return;
+        }
+        
+        // Show loading, hide results and errors
+        loadingElement.style.display = 'block';
+        resultSection.style.display = 'none';
+        errorElement.style.display = 'none';
+        extractBtn.disabled = true;
+        
+        try {
+          const response = await fetch('/api/extract-artist-image', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ spotifyUrl })
+          });
+          
+          const data = await response.json();
+          
+          if (!response.ok) {
+            throw new Error(data.error || 'Failed to extract artist images');
+          }
+          
+          displayResults(data);
+        } catch (error) {
+          console.error('Error:', error);
+          showError(error.message || 'An error occurred while extracting artist images');
+        } finally {
+          loadingElement.style.display = 'none';
+          extractBtn.disabled = false;
+        }
+      }
+      
+      function displayResults(artistData) {
+        // Update artist info
+        artistNameElement.textContent = artistData.artistName;
+        artistDetailsElement.textContent = `Genres: ${artistData.genres.slice(0, 3).join(', ')} • Followers: ${formatNumber(artistData.followers)}`;
+        
+        // Clear previous images
+        imageContainer.innerHTML = '';
+        
+        // Show only the largest image (first in array as Spotify returns them in descending order)
+        const largestImage = artistData.images[0]; // Spotify returns images in descending order of size
+        const imageCard = document.createElement('div');
+        imageCard.className = 'image-card';
+
+        const img = document.createElement('img');
+        img.src = largestImage.url;
+        img.alt = `${artistData.artistName} largest image`;
+        img.style.width = '100%';
+        img.style.borderRadius = '5px';
+
+        const sizeText = document.createElement('div');
+        sizeText.className = 'image-size';
+        sizeText.textContent = `${largestImage.width}×${largestImage.height}px (${Math.round(largestImage.width * largestImage.height / 1000)}k pixels)`;
+
+        imageCard.appendChild(img);
+        imageCard.appendChild(sizeText);
+        imageContainer.appendChild(imageCard);
+        
+        // Show the results section
+        resultSection.style.display = 'block';
+      }
+      
+      function showError(message) {
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+      }
+      
+      function formatNumber(num) {
+        if (num >= 1000000) {
+          return (num / 1000000).toFixed(1) + 'M';
+        } else if (num >= 1000) {
+          return (num / 1000).toFixed(1) + 'K';
+        }
+        return num;
+      }
+    });
+  </script>
+</body>
+</html>
