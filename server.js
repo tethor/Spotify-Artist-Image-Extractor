@@ -1,6 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
+const { extractBannerWithPuppeteer } = require('./puppeteer-banner');
 require('dotenv').config();
 
 const app = express();
@@ -80,51 +81,167 @@ async function getArtistData(artistId, token) {
   }
 }
 
-// API endpoint to extract artist image
+// API endpoint to extract artist image (híbrido: API para mobile, Puppeteer para desktop)
 app.post('/api/extract-artist-image', async (req, res) => {
   try {
-    const { spotifyUrl } = req.body;
+    const { spotifyUrl, imageType = 'mobile' } = req.body;
     
     if (!spotifyUrl) {
       return res.status(400).json({ error: 'Spotify URL is required' });
     }
     
-    // Extract artist ID from URL
+    // Extraer artist ID
     const artistId = extractArtistId(spotifyUrl);
     
     if (!artistId) {
       return res.status(400).json({ error: 'Invalid Spotify URL format' });
     }
     
-    // Get access token
-    const token = await getSpotifyToken();
-    
-    // Get artist data
-    const artistData = await getArtistData(artistId, token);
-    
-    // Extract image (using the highest resolution available)
-    const images = artistData.images;
-    if (!images || images.length === 0) {
-      return res.status(404).json({ error: 'No images found for this artist' });
+    // MODO MOBILE: Usar la API de Spotify (imagen de perfil cuadrada)
+    if (imageType === 'mobile') {
+      console.log('Using Spotify API for mobile image');
+      const token = await getSpotifyToken();
+      const artistData = await getArtistData(artistId, token);
+      
+      const images = artistData.images;
+      if (!images || images.length === 0) {
+        return res.status(404).json({ error: 'No images found for this artist' });
+      }
+      
+      // Seleccionar la imagen más cuadrada (ideal para mobile)
+      let selectedImage = images.reduce((prev, current) => {
+        if (!prev) return current;
+        const prevDiff = Math.abs(prev.width - prev.height);
+        const currentDiff = Math.abs(current.width - current.height);
+        return currentDiff < prevDiff ? current : prev;
+      }, null);
+      
+      res.json({
+        artistName: artistData.name,
+        artistId: artistData.id,
+        selectedImage: selectedImage,
+        allImages: images,
+        method: 'spotify_api',
+        genres: artistData.genres,
+        followers: artistData.followers.total
+      });
+    } 
+    // MODO DESKTOP: Usar Puppeteer para extraer el banner de la página
+    else if (imageType === 'desktop') {
+      console.log('Using Puppeteer for desktop banner extraction');
+      
+      let artistUrl = spotifyUrl;
+      // Normalizar URL si no tiene el formato completo
+      if (!artistUrl.includes('spotify.com')) {
+        artistUrl = `https://open.spotify.com/artist/${artistId}`;
+      }
+      
+      // VERIFICAR SI USAR BROWSERLESS O LOCAL
+      const browserlessToken = process.env.BROWSERLESS_TOKEN;
+      const isValidToken = browserlessToken && 
+                           browserlessToken !== 'your_browserless_token_here' && 
+                           browserlessToken.trim() !== '';
+      
+      let bannerResult;
+      let usedFallback = false;
+      let browserType = 'Unknown';
+      
+      if (!isValidToken) {
+        // SIN TOKEN VÁLIDO: Usar Puppeteer local directamente
+        console.log('⚠️ No valid Browserless.io token found, using local Puppeteer');
+        console.log('   (To use Browserless, edit .env and set BROWSERLESS_TOKEN=your_real_token)');
+        usedFallback = true;
+        browserType = 'Local Chrome';
+        
+        // Forzar modo local
+        process.env.BROWSERLESS_TOKEN = '';
+        
+        try {
+          bannerResult = await extractBannerWithPuppeteer(artistUrl);
+          if (bannerResult) {
+            bannerResult.browserType = browserType;
+          }
+        } catch (error) {
+          console.error('❌ Local Puppeteer failed:', error.message);
+          return res.status(500).json({ 
+            error: 'Local Puppeteer failed to extract banner',
+            details: error.message,
+            suggestion: 'Make sure you have Chrome/Chromium installed or an internet connection for first run download'
+          });
+        }
+        
+      } else {
+        // CON TOKEN: Intentar Browserless.io primero
+        console.log('✅ Valid Browserless.io token found, trying Browserless.io...');
+        
+        try {
+          bannerResult = await extractBannerWithPuppeteer(artistUrl);
+          browserType = 'Browserless.io';
+        } catch (error) {
+          console.error('❌ Browserless.io failed:', error.message);
+          
+          // Si falla por auth, intentar local como fallback
+          if (error.message && error.message.includes('401')) {
+            console.log('🔄 Browserless.io auth failed, trying local Puppeteer fallback...');
+            
+            // Guardar token para restaurarlo después
+            const savedToken = process.env.BROWSERLESS_TOKEN;
+            process.env.BROWSERLESS_TOKEN = ''; // Forzar local
+            
+            try {
+              bannerResult = await extractBannerWithPuppeteer(artistUrl);
+              usedFallback = true;
+              browserType = 'Local Chrome (fallback)';
+              console.log('✅ Fallback to local Puppeteer successful!');
+              
+              // Restaurar token
+              process.env.BROWSERLESS_TOKEN = savedToken;
+            } catch (fallbackError) {
+              console.error('❌ Local Puppeteer fallback also failed:', fallbackError.message);
+              // Restaurar token
+              process.env.BROWSERLESS_TOKEN = savedToken;
+              
+              return res.status(500).json({ 
+                error: 'Both Browserless.io and local Puppeteer failed',
+                details: `Browserless: ${error.message} | Local: ${fallbackError.message}`,
+                suggestion: 'Check your Browserless token or Chrome installation'
+              });
+            }
+          } else {
+            // Otro error distinto a auth
+            return res.status(500).json({ 
+              error: 'Browserless.io failed to extract banner',
+              details: error.message
+            });
+          }
+        }
+      }
+      
+      if (!bannerResult) {
+        return res.status(404).json({ error: 'No banner image found on this artist page' });
+      }
+      
+      res.json({
+        artistName: artistId, // No tenemos el nombre sin la API, usamos ID
+        artistId: artistId,
+        selectedImage: {
+          url: bannerResult.url,
+          width: null, // No sabemos dimensiones sin descargar
+          height: null
+        },
+        allImages: [{ url: bannerResult.url }],
+        method: 'puppeteer_scraper',
+        note: 'Banner extracted from Spotify webpage',
+        browserType: browserType || bannerResult.browserType,
+        usedLocalFallback: usedFallback // Informar si se usó fallback local
+      });
+    } else {
+      return res.status(400).json({ error: 'Invalid imageType. Use "mobile" or "desktop"' });
     }
-    
-    // Return the largest image (first in array as Spotify returns them in descending order)
-    const largestImage = images[0];
-    const smallestImage = images[images.length - 1];
-    
-    res.json({
-      artistName: artistData.name,
-      artistId: artistData.id,
-      images: images, // Return all available sizes
-      largestImage: largestImage,
-      smallestImage: smallestImage,
-      genres: artistData.genres,
-      followers: artistData.followers.total
-    });
     
   } catch (error) {
     console.error('Error processing request:', error.message);
-    res.status(500).json({ error: 'Failed to extract artist image' });
+    res.status(500).json({ error: 'Failed to extract artist image', details: error.message });
   }
 });
 

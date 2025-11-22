@@ -212,11 +212,23 @@
     <main>
       <section class="input-section">
         <h2>Enter Spotify Artist Link</h2>
-        <p>Paste any Spotify artist URL to extract their profile images</p>
+        <p>Paste any Spotify artist URL and select the image type you want to download</p>
         
         <div class="input-group">
           <input type="url" id="spotifyUrl" placeholder="https://open.spotify.com/artist/..." autocomplete="off">
-          <button id="extractBtn">Extract Images</button>
+          <button id="extractBtn">Extract Image</button>
+        </div>
+        
+        <div class="image-type-selector" style="margin-top: 20px;">
+          <p style="margin-bottom: 10px; font-weight: bold;">Select Image Type:</p>
+          <label style="margin-right: 20px; cursor: pointer; display: block; margin-bottom: 10px;">
+            <input type="radio" name="imageType" value="mobile" checked style="margin-right: 8px;">
+            📱 <strong>Mobile</strong> - Profile picture (square, from Spotify API)
+          </label>
+          <label style="cursor: pointer; display: block;">
+            <input type="radio" name="imageType" value="desktop" style="margin-right: 8px;">
+            💻 <strong>Desktop</strong> - Banner/header (wide, from Spotify webpage)
+          </label>
         </div>
         
         <div class="instructions">
@@ -225,9 +237,12 @@
             <li>Go to an artist's page on Spotify</li>
             <li>Copy the URL from your browser's address bar</li>
             <li>Paste it in the input field above</li>
-            <li>Click "Extract Images" to get all available image sizes</li>
+            <li>Select Mobile (square profile) or Desktop (wide banner)</li>
+            <li>Click "Extract Image" to download your selection</li>
           </ul>
-          <p><strong>Example:</strong> <code>https://open.spotify.com/artist/3Nrfpe0tUJi4K4DXYWgMUX</code> (Taylor Swift)</p>
+          <p><strong>Note about Desktop/Banner:</strong> Uses Browserless.io (recommended) or local Puppeteer. Add your Browserless token to .env for faster extraction.</p>
+          <p><strong>Get Browserless token:</strong> <a href="https://www.browserless.io/" target="_blank" style="color: #1db954;">Free tier available</a></p>
+          <p><strong>Example:</strong> <code>https://open.spotify.com/artist/3Nrfpe0tUJi4K4DXYWgMUX</code> (BTS)</p>
         </div>
       </section>
       
@@ -268,6 +283,7 @@
       
       async function extractArtistImages() {
         const spotifyUrl = spotifyUrlInput.value.trim();
+        const selectedImageType = document.querySelector('input[name="imageType"]:checked').value;
         
         if (!spotifyUrl) {
           showError('Please enter a Spotify URL');
@@ -286,7 +302,10 @@
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ spotifyUrl })
+            body: JSON.stringify({ 
+              spotifyUrl,
+              imageType: selectedImageType 
+            })
           });
           
           const data = await response.json();
@@ -295,7 +314,7 @@
             throw new Error(data.error || 'Failed to extract artist images');
           }
           
-          displayResults(data);
+          displayResults(data, selectedImageType);
         } catch (error) {
           console.error('Error:', error);
           showError(error.message || 'An error occurred while extracting artist images');
@@ -305,31 +324,132 @@
         }
       }
       
-      function displayResults(artistData) {
+      function displayResults(artistData, imageType) {
         // Update artist info
-        artistNameElement.textContent = artistData.artistName;
-        artistDetailsElement.textContent = `Genres: ${artistData.genres.slice(0, 3).join(', ')} • Followers: ${formatNumber(artistData.followers)}`;
+        const artistName = artistData.artistName || artistData.artistId;
+        artistNameElement.textContent = artistName;
+        
+        if (artistData.genres && artistData.followers) {
+          artistDetailsElement.textContent = `Genres: ${artistData.genres.slice(0, 3).join(', ')} • Followers: ${formatNumber(artistData.followers)}`;
+        } else {
+          artistDetailsElement.textContent = artistData.note || 'Banner extracted from Spotify webpage';
+        }
         
         // Clear previous images
         imageContainer.innerHTML = '';
         
-        // Show only the largest image (first in array as Spotify returns them in descending order)
-        const largestImage = artistData.images[0]; // Spotify returns images in descending order of size
+        // Show the selected image
         const imageCard = document.createElement('div');
         imageCard.className = 'image-card';
-
+        imageCard.style.maxWidth = '600px';
+        imageCard.style.margin = '0 auto';
+        
+        const selectedImage = artistData.selectedImage;
+        
         const img = document.createElement('img');
-        img.src = largestImage.url;
-        img.alt = `${artistData.artistName} largest image`;
+        img.src = selectedImage.url;
+        img.alt = `${artistName} - ${imageType === 'mobile' ? 'Mobile' : 'Desktop'} image`;
         img.style.width = '100%';
         img.style.borderRadius = '5px';
-
+        img.style.maxHeight = imageType === 'desktop' ? '400px' : '300px';
+        img.style.objectFit = imageType === 'desktop' ? 'cover' : 'contain';
+        img.style.backgroundColor = '#000';
+        
         const sizeText = document.createElement('div');
         sizeText.className = 'image-size';
-        sizeText.textContent = `${largestImage.width}×${largestImage.height}px (${Math.round(largestImage.width * largestImage.height / 1000)}k pixels)`;
-
+        sizeText.style.marginTop = '15px';
+        sizeText.style.fontSize = '1rem';
+        
+        if (imageType === 'mobile' && selectedImage.width && selectedImage.height) {
+          const aspectRatio = selectedImage.width / selectedImage.height;
+          let formatType = '';
+          if (aspectRatio > 1.8) formatType = '🖼️ Banner/Wide';
+          else if (aspectRatio > 1.2) formatType = '📐 Wide';
+          else if (aspectRatio < 0.8) formatType = '📱 Vertical';
+          else formatType = '⬜ Square';
+          sizeText.textContent = `${selectedImage.width}×${selectedImage.height}px (${formatType}) - From Spotify API`;
+        } else {
+          sizeText.textContent = imageType === 'mobile' ? '📱 Mobile Profile (from Spotify API)' : '🖼️ Desktop Banner (from Spotify webpage)';
+        }
+        
+        const imageTypeLabel = document.createElement('div');
+        imageTypeLabel.style.marginTop = '10px';
+        imageTypeLabel.style.fontWeight = 'bold';
+        imageTypeLabel.style.color = '#1db954';
+        imageTypeLabel.style.fontSize = '1.1rem';
+        imageTypeLabel.textContent = imageType === 'mobile' ? '📱 Mobile Download' : '💻 Desktop Download';
+        
+        // Botón de descarga
+        const downloadBtn = document.createElement('button');
+        downloadBtn.textContent = 'Download Image';
+        downloadBtn.style.marginTop = '20px';
+        downloadBtn.style.width = '100%';
+        downloadBtn.style.background = '#1db954';
+        downloadBtn.style.color = 'white';
+        downloadBtn.style.border = 'none';
+        downloadBtn.style.padding = '12px';
+        downloadBtn.style.borderRadius = '5px';
+        downloadBtn.style.cursor = 'pointer';
+        downloadBtn.style.fontWeight = 'bold';
+        downloadBtn.style.fontSize = '1rem';
+        downloadBtn.onmouseover = () => downloadBtn.style.background = '#1ed760';
+        downloadBtn.onmouseout = () => downloadBtn.style.background = '#1db954';
+        downloadBtn.onclick = () => {
+          const link = document.createElement('a');
+          link.href = selectedImage.url;
+          
+          const cleanArtistName = artistName.replace(/[^a-zA-Z0-9]/g, '_');
+          const dimensions = selectedImage.width && selectedImage.height ? 
+            `_${selectedImage.width}x${selectedImage.height}` : '';
+          const typeLabel = imageType === 'mobile' ? 'mobile_profile' : 'desktop_banner';
+          
+          link.download = `${cleanArtistName}${dimensions}_${typeLabel}.jpg`;
+          link.target = '_blank';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        };
+        
         imageCard.appendChild(img);
         imageCard.appendChild(sizeText);
+        imageCard.appendChild(imageTypeLabel);
+        imageCard.appendChild(downloadBtn);
+        
+        // Mostrar metadatos de método utilizado
+        const methodInfo = document.createElement('div');
+        methodInfo.style.marginTop = '25px';
+        methodInfo.style.padding = '15px';
+        methodInfo.style.backgroundColor = imageType === 'mobile' ? 'rgba(29, 185, 84, 0.1)' : 'rgba(255, 165, 0, 0.1)';
+        methodInfo.style.borderRadius = '5px';
+        methodInfo.style.fontSize = '0.9rem';
+        methodInfo.style.borderLeft = `4px solid ${imageType === 'mobile' ? '#1db954' : '#ffa500'}`;
+        
+        let methodText = artistData.method === 'spotify_api' ? 
+          'Spotify API' : 
+          `Puppeteer Web Scraper using ${artistData.browserType || 'Headless Chrome'}`;
+        
+        // Añadir mensaje si se usó fallback automático
+        if (artistData.usedFallback) {
+          methodText += ' ⚠️ (Fallback from Browserless.io)';
+          methodInfo.style.backgroundColor = 'rgba(255, 100, 100, 0.1)';
+          methodInfo.style.borderLeftColor = '#ff6464';
+          
+          const fallbackWarning = document.createElement('div');
+          fallbackWarning.style.marginTop = '10px';
+          fallbackWarning.style.color = '#ff6464';
+          fallbackWarning.style.fontWeight = 'bold';
+          fallbackWarning.innerHTML = `
+            <p>Browserless.io auth failed. Using local Chrome instead (slower).</p>
+            <p style="font-size: 0.85rem; font-weight: normal; margin-top: 5px;">
+              First run may be slow as it downloads ~300MB of Chrome.
+            </p>
+          `;
+          methodInfo.appendChild(fallbackWarning);
+        }
+        
+        methodInfo.innerHTML = `<strong>Method:</strong> ${methodText}`;
+        imageCard.appendChild(methodInfo);
+        
         imageContainer.appendChild(imageCard);
         
         // Show the results section
