@@ -41,8 +41,9 @@ async function extractBannerWithPuppeteer(artistUrl) {
 
     const page = await browser.newPage();
 
-    // Set desktop viewport (para ver el banner completo)
-    await page.setViewport({ width: 1920, height: 1080 });
+    // Set desktop viewport (para ver el banner completo en alta resolución)
+    // User suggested 2660x1140px, we use slightly larger height to be safe
+    await page.setViewport({ width: 2660, height: 1400 });
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36');
 
     console.log(`Navigating to: ${artistUrl}`);
@@ -59,7 +60,7 @@ async function extractBannerWithPuppeteer(artistUrl) {
 
     console.log('Extracting banner from DOM...');
 
-    // Extraer banner usando los selectores del proyecto original
+    // Extraer banner usando lógica mejorada para encontrar la imagen más grande/ancha
     const bannerUrl = await page.evaluate(() => {
       // Helper para extraer URL de background-image
       function extractUrlFromStyle(style) {
@@ -68,60 +69,85 @@ async function extractBannerWithPuppeteer(artistUrl) {
         return match ? match[1] : null;
       }
 
-      // Estrategia 1: Buscar background-image
-      const backgroundImage = document.querySelector('div[data-testid="background-image"]');
-      if (backgroundImage) {
-        const style = window.getComputedStyle(backgroundImage).backgroundImage;
+      const candidates = [];
+
+      // 1. Buscar en elementos específicos conocidos (background-image)
+      const bgElements = document.querySelectorAll('div[data-testid="background-image"], div[data-testid="entity-image"], .main-view-container__scroll-node-child');
+      bgElements.forEach(el => {
+        const style = window.getComputedStyle(el).backgroundImage;
         if (style && style !== 'none') {
           const url = extractUrlFromStyle(style);
-          if (url) return url;
+          if (url) {
+            const rect = el.getBoundingClientRect();
+            candidates.push({
+              url,
+              width: rect.width,
+              height: rect.height,
+              area: rect.width * rect.height,
+              source: 'background-element'
+            });
+          }
         }
-      }
+      });
 
-      // Estrategia 2: Buscar entity image
-      const entityImage = document.querySelector('div[data-testid="entity-image"]');
-      if (entityImage) {
-        const img = entityImage.querySelector('img');
-        if (img && img.src) {
-          return img.src;
-        }
-
-        const style = window.getComputedStyle(entityImage).backgroundImage;
-        if (style && style !== 'none') {
-          const url = extractUrlFromStyle(style);
-          if (url) return url;
-        }
-      }
-
-      // Estrategia 3: Buscar patrón ab67618600000194
-      const allElements = Array.from(document.querySelectorAll('*'));
-      for (const el of allElements) {
-        const bgStyle = window.getComputedStyle(el).backgroundImage;
-        if (bgStyle && bgStyle !== 'none' && bgStyle.includes('ab67618600000194')) {
-          const url = extractUrlFromStyle(bgStyle);
-          if (url) return url;
-        }
-      }
-
-      // Estrategia 4: Buscar cualquier imagen grande
+      // 2. Buscar en todas las imágenes grandes (img tags)
       const allImages = Array.from(document.querySelectorAll('img'));
-      const largeImages = allImages
-        .filter(img => {
-          if (!img.src) return false;
-          const rect = img.getBoundingClientRect();
-          return rect.width > 400 && rect.height > 200;
-        })
-        .sort((a, b) => {
-          const rectA = a.getBoundingClientRect();
-          const rectB = b.getBoundingClientRect();
-          return (rectB.width * rectB.height) - (rectA.width * rectA.height);
-        });
+      allImages.forEach(img => {
+        if (!img.src) return;
+        const rect = img.getBoundingClientRect();
+        // Filtrar iconos y miniaturas
+        if (rect.width > 300 && rect.height > 100) {
+          candidates.push({
+            url: img.src,
+            width: rect.width,
+            height: rect.height,
+            area: rect.width * rect.height,
+            source: 'img-tag'
+          });
+        }
+      });
 
-      if (largeImages.length > 0) {
-        return largeImages[0].src;
+      // 3. Buscar cualquier elemento con background-image grande
+      // (Limitamos la búsqueda para no matar el rendimiento)
+      const potentialDivs = document.querySelectorAll('div');
+      // Solo revisamos los primeros 50 divs grandes o contenedores principales
+      let checkedCount = 0;
+      for (const div of potentialDivs) {
+        if (checkedCount > 200) break;
+
+        const rect = div.getBoundingClientRect();
+        if (rect.width > 600 && rect.height > 200) {
+          const style = window.getComputedStyle(div).backgroundImage;
+          if (style && style !== 'none' && style.includes('http')) {
+            const url = extractUrlFromStyle(style);
+            if (url) {
+              candidates.push({
+                url,
+                width: rect.width,
+                height: rect.height,
+                area: rect.width * rect.height,
+                source: 'generic-background'
+              });
+            }
+          }
+          checkedCount++;
+        }
       }
 
-      return null;
+      console.log('Candidates found:', candidates);
+
+      if (candidates.length === 0) return null;
+
+      // Ordenar candidatos:
+      // Prioridad 1: Área (más grande es mejor para banner)
+      // Prioridad 2: Aspect Ratio (más ancho es mejor para banner)
+
+      candidates.sort((a, b) => {
+        return b.area - a.area;
+      });
+
+      // Devolver el mejor candidato
+      return candidates[0].url;
     });
 
     await browser.close();
