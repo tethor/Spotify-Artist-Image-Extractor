@@ -268,7 +268,9 @@ app.post('/api/extract-artist-image', async (req, res) => {
         method: 'puppeteer_scraper',
         note: 'Banner extracted from Spotify webpage',
         browserType: browserType || bannerResult.browserType,
-        usedLocalFallback: usedFallback // Informar si se usó fallback local
+        usedLocalFallback: usedFallback, // Informar si se usó fallback local
+        genres: artistData.genres,
+        followers: artistData.followers.total
       });
     } else {
       return res.status(400).json({ error: 'Invalid imageType. Use "mobile" or "desktop"' });

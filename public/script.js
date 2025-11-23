@@ -530,21 +530,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // Event Listeners
   document.addEventListener('mouseleave', handleMouseLeave);
 
-  // Mobile-friendly trigger (modal disabled for scroll)
-  // let scrollTriggered = false;
-  // window.addEventListener('scroll', () => {
-  //   if (scrollTriggered || !shouldShowModal()) return;
-  //
-  //   const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-  //
-  //   // Trigger at 50% scroll on mobile devices
-  //   if (scrollPercent > 50 && window.innerWidth <= 768) {
-  //     scrollTriggered = true;
-  //     setTimeout(() => {
-  //       showModal(); // Disabled: modal now only opens after image extraction
-  //     }, 1000); // Small delay after scroll threshold
-  //   }
-  // });
+  // Mobile-friendly trigger logic removed as it was commented out
 
   // Close modal on overlay click
   modal.addEventListener('click', (e) => {
