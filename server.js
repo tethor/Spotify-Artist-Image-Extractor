@@ -17,7 +17,7 @@ const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
 
 if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET) {
-  console.warn('Spotify API credentials not found. Please set SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET in your .env file.');
+  console.warn('⚠️ Spotify API credentials not found. Please set SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET in your .env file.');
 }
 
 // Get Spotify API access token
@@ -39,8 +39,8 @@ async function getSpotifyToken() {
 
     return response.data.access_token;
   } catch (error) {
-    console.error('Error getting Spotify token:', error.message);
-    throw error;
+    console.error('❌ Error getting Spotify token:', error.message);
+    throw new Error('Failed to authenticate with Spotify API');
   }
 }
 
@@ -77,8 +77,8 @@ async function getArtistData(artistId, token) {
 
     return response.data;
   } catch (error) {
-    console.error('Error getting artist data:', error.message);
-    throw error;
+    console.error(`❌ Error getting artist data for ID ${artistId}:`, error.message);
+    throw new Error('Failed to fetch artist data from Spotify');
   }
 }
 
@@ -118,7 +118,7 @@ app.post('/api/extract-artist-image', async (req, res) => {
         console.log(`Found artist: ${artist.name} (${artistId})`);
 
       } catch (searchError) {
-        console.error('Error searching artist:', searchError.message);
+        console.error('❌ Error searching artist:', searchError.message);
         return res.status(500).json({ error: 'Failed to search for artist', details: searchError.message });
       }
     }
@@ -128,7 +128,7 @@ app.post('/api/extract-artist-image', async (req, res) => {
 
     // MODO MOBILE: Usar la API de Spotify (imagen de perfil cuadrada)
     if (imageType === 'mobile') {
-      console.log('Using Spotify API for mobile image');
+      console.log(`📱 Processing mobile image request for: ${resolvedUrl}`);
       const token = await getSpotifyToken();
       const artistData = await getArtistData(artistId, token);
 
@@ -158,6 +158,12 @@ app.post('/api/extract-artist-image', async (req, res) => {
     // MODO DESKTOP: Usar Puppeteer para extraer el banner de la página
     else if (imageType === 'desktop') {
       console.log('Using Puppeteer for desktop banner extraction');
+
+      // Primero obtener el nombre del artista usando la API de Spotify
+      console.log('Getting artist name from Spotify API...');
+      const token = await getSpotifyToken();
+      const artistData = await getArtistData(artistId, token);
+      const artistName = artistData.name;
 
       let artistUrl = finalSpotifyUrl;
       // Normalizar URL si no tiene el formato completo
@@ -251,12 +257,12 @@ app.post('/api/extract-artist-image', async (req, res) => {
       }
 
       res.json({
-        artistName: artistId, // No tenemos el nombre sin la API, usamos ID
+        artistName: artistName, // Ahora usamos el nombre real del artista
         artistId: artistId,
         selectedImage: {
           url: bannerResult.url,
-          width: null, // No sabemos dimensiones sin descargar
-          height: null
+          width: 2660, // Tamaño hardcodeado para banners de Spotify desktop
+          height: 1140
         },
         allImages: [{ url: bannerResult.url }],
         method: 'puppeteer_scraper',

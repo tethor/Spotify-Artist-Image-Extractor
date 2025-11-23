@@ -327,6 +327,11 @@ button:disabled {
   color: #fff;
   display: inline-block;
   padding: 5px 15px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-sizing: border-box;
 }
 
 .artist-details {
@@ -407,7 +412,422 @@ button:disabled {
   color: #fff;
 }
 
-/* Responsive */
+/* Responsive Design - Multiple Breakpoints */
+/* Mobile-First Complete Reorganization - Based on Instructables Principles */
+/* Ultra Small Devices (Phones < 320px) - Complete Mobile-First Layout */
+@media (max-width: 319px) {
+
+  /* Complete Header Reorganization */
+  .header {
+    padding: 12px 8px;
+    text-align: center;
+  }
+
+  .lang-btn {
+    position: relative;
+    top: 0;
+    right: 0;
+    float: none;
+    margin-bottom: 10px;
+    padding: 6px 10px;
+    font-size: 0.7rem;
+    width: 60px;
+    height: auto;
+  }
+
+  h1 {
+    font-size: 1.3rem;
+    line-height: 1.1;
+    padding: 8px 5px;
+    margin: 0;
+  }
+
+  .subtitle {
+    font-size: 0.8rem;
+    margin: 5px 0;
+  }
+
+  .brand-tag {
+    font-size: 0.6rem;
+    margin: 5px 0;
+    line-height: 1.2;
+  }
+
+  /* Instructions - Collapsed by Default */
+  .instructions {
+    order: 4;
+    padding: 10px 8px;
+    margin-top: 15px;
+    border-top: 1px dashed #000;
+    max-height: 40px;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+  }
+
+  .instructions.show {
+    max-height: 500px;
+  }
+
+  .instructions h3 {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .instructions ul {
+    font-size: 0.7rem;
+    padding-left: 12px;
+    margin: 5px 0;
+  }
+
+  .instructions li {
+    padding: 3px 0;
+    line-height: 1.3;
+  }
+
+  .instructions p {
+    font-size: 0.6rem;
+    margin: 8px 0;
+    line-height: 1.2;
+  }
+
+  /* Input Section - Stacked Completely */
+  .input-section {
+    order: 1;
+    padding: 15px 8px;
+  }
+
+  .input-group {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .input-field {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 0.8rem;
+    border-radius: 4px;
+  }
+
+  .extract-btn {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 0.9rem;
+    margin-top: 5px;
+    border-radius: 4px;
+  }
+
+  /* Image Type Selector - Mobile-First Card Layout */
+  .image-type-selector {
+    order: 2;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 8px;
+    margin: 10px 0;
+  }
+
+  .radio-label {
+    width: 100%;
+    border: 1px solid #000;
+    border-radius: 4px;
+    background: #f8f8f8;
+    transition: all 0.2s;
+  }
+
+  .radio-label:hover {
+    background: #e8e8e8;
+    transform: none;
+  }
+
+  .radio-indicator {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #000;
+    margin-right: 8px;
+  }
+
+  .radio-indicator.checked {
+    background: #000;
+  }
+
+  .radio-label span {
+    font-size: 0.8rem;
+    padding: 8px 10px;
+  }
+
+  /* Results Section - Simplified for Mobile */
+  .result-section {
+    order: 3;
+    padding: 15px 8px;
+    margin-top: 15px;
+  }
+
+  .artist-info {
+    text-align: center;
+    padding: 10px 8px;
+  }
+
+  .artist-name {
+    font-size: 1.6rem;
+    padding: 6px 10px;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .artist-details {
+    font-size: 0.7rem;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+
+  .image-card {
+    margin: 8px 4px;
+    padding: 8px;
+    text-align: center;
+  }
+
+  .download-btn {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 0.8rem;
+    margin-top: 8px;
+    border-radius: 4px;
+  }
+
+  /* Loading and Error States */
+  .loading {
+    font-size: 0.9rem;
+    padding: 10px 8px;
+  }
+
+  .error {
+    font-size: 0.8rem;
+    padding: 8px;
+    margin: 10px 0;
+  }
+
+  /* Footer - Simplified (Mobile First overrides handled at bottom of file) */
+  /* Removed specific footer overrides to rely on Mobile-First base styles */
+
+  /* Modal - Ultra Compact */
+  .modal-container {
+    width: 99%;
+    max-width: 98vw;
+    padding: 10px 8px;
+    box-shadow: 4px 4px 0px #000;
+  }
+
+  .modal-close {
+    top: 2px;
+    right: 2px;
+    width: 25px;
+    height: 25px;
+    font-size: 1rem;
+  }
+
+  .modal-header h2 {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+  }
+
+  .modal-subtitle {
+    font-size: 0.8rem;
+  }
+
+  .modal-intro {
+    font-size: 0.7rem;
+    padding: 8px 10px;
+  }
+
+  .modal-benefits li {
+    font-size: 0.6rem;
+    padding: 6px 4px;
+    margin: 1px 0;
+  }
+
+  .modal-cta {
+    font-size: 0.8rem;
+    padding: 10px;
+    margin: 8px 10px;
+  }
+
+  .modal-checkbox {
+    font-size: 0.6rem;
+    padding: 6px 10px;
+  }
+}
+
+/* Small Devices (Phones 360px - 480px) */
+@media (min-width: 360px) and (max-width: 480px) {
+  h1 {
+    font-size: 1.8rem;
+    line-height: 1.3;
+    padding: 18px 15px;
+  }
+
+  .header {
+    padding: 18px 15px;
+  }
+
+  .container {
+    padding: 25px 20px;
+  }
+
+  .lang-btn {
+    top: 8px;
+    right: 8px;
+    padding: 10px 15px;
+    font-size: 0.9rem;
+  }
+
+  .input-field {
+    padding: 14px 18px;
+    font-size: 1rem;
+  }
+
+  .extract-btn {
+    padding: 18px 25px;
+    font-size: 1.1rem;
+  }
+
+  .type-option {
+    padding: 12px 18px;
+    font-size: 0.95rem;
+  }
+
+  .instructions {
+    padding: 18px 15px;
+  }
+
+  .instructions h2 {
+    font-size: 1.2rem;
+  }
+
+  .instructions li {
+    font-size: 0.85rem;
+    padding: 10px 15px;
+  }
+
+  .artist-name {
+    font-size: 2rem;
+    padding: 10px 15px;
+  }
+
+  .artist-details {
+    font-size: 0.85rem;
+  }
+
+  /* Footer overrides removed to rely on Mobile-First base styles */
+}
+
+/* Medium Devices (Phones 481px - 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+  h1 {
+    font-size: 2.2rem;
+    line-height: 1.4;
+    padding: 20px 18px;
+  }
+
+  .header {
+    padding: 20px 18px;
+  }
+
+  .container {
+    padding: 30px 25px;
+  }
+
+  .lang-btn {
+    top: 10px;
+    right: 10px;
+    padding: 12px 18px;
+  }
+
+  .input-field {
+    padding: 16px 20px;
+    font-size: 1.1rem;
+  }
+
+  .extract-btn {
+    padding: 20px 30px;
+    font-size: 1.2rem;
+  }
+
+  .type-option {
+    padding: 14px 20px;
+    font-size: 1rem;
+  }
+
+  .instructions {
+    padding: 20px 18px;
+  }
+
+  .instructions h2 {
+    font-size: 1.3rem;
+  }
+
+  .footer-divider {
+    display: none;
+  }
+
+  .instructions li {
+    font-size: 0.9rem;
+    padding: 12px 18px;
+  }
+
+  .artist-name {
+    font-size: 2.2rem;
+    padding: 12px 18px;
+  }
+
+  .artist-details {
+    font-size: 0.9rem;
+  }
+
+  .footer-content {
+    font-size: 0.9rem;
+  }
+}
+
+/* Large Mobile and Small Tablet (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  h1 {
+    font-size: 2.5rem;
+    padding: 25px 20px;
+  }
+
+  .container {
+    padding: 35px 30px;
+  }
+
+  .lang-btn {
+    padding: 15px 25px;
+    font-size: 1rem;
+  }
+
+  .type-option {
+    padding: 16px 25px;
+    font-size: 1.1rem;
+  }
+
+  .instructions li {
+    font-size: 1rem;
+    padding: 15px 20px;
+  }
+
+  .artist-name {
+    font-size: 2.5rem;
+    padding: 15px 20px;
+  }
+
+  .footer-content {
+    font-size: 1rem;
+  }
+}
+
+/* Original breakpoint for very small screens - Keep for compatibility */
 @media (max-width: 600px) {
   h1 {
     font-size: 2rem;
@@ -416,8 +836,6 @@ button:disabled {
   .input-group {
     flex-direction: column;
   }
-
-
 
   .image-type-selector {
     flex-direction: column;
@@ -446,7 +864,7 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 15px;
+  gap: 20px;
   flex-wrap: wrap;
   margin-bottom: 15px;
 }
@@ -456,13 +874,10 @@ footer {
   display: flex;
   align-items: center;
   gap: 8px;
+  position: relative;
 }
 
-.footer-divider {
-  color: var(--accent-primary);
-  font-weight: bold;
-  font-size: 1.2rem;
-}
+/* Old footer-social rules removed to use Mobile-First section at the bottom */
 
 .footer-tagline {
   font-size: 0.75rem;
@@ -697,8 +1112,66 @@ footer {
   background: var(--accent-primary);
 }
 
-/* Responsive Modal */
-@media (max-width: 600px) {
+/* Responsive Modal - Multiple Breakpoints */
+/* Extra Small Devices (Phones < 360px) */
+@media (max-width: 359px) {
+  .modal-container {
+    width: 98%;
+    max-width: 95vw;
+    box-shadow: 6px 6px 0px #000;
+    padding: 15px 10px;
+  }
+
+  .modal-close {
+    top: 5px;
+    right: 5px;
+    width: 30px;
+    height: 30px;
+    font-size: 1.2rem;
+  }
+
+  .modal-header {
+    padding: 20px 15px;
+  }
+
+  .modal-header h2 {
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+  }
+
+  .modal-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .modal-intro {
+    font-size: 0.8rem;
+    padding: 10px 15px;
+  }
+
+  .modal-benefits {
+    gap: 5px;
+  }
+
+  .modal-benefits li {
+    font-size: 0.7rem;
+    padding: 8px 6px;
+    margin: 2px 0;
+  }
+
+  .modal-cta {
+    font-size: 0.9rem;
+    padding: 12px;
+    margin: 10px 15px;
+  }
+
+  .modal-checkbox {
+    font-size: 0.7rem;
+    padding: 8px 15px;
+  }
+}
+
+/* Small Devices (Phones 360px - 480px) */
+@media (min-width: 360px) and (max-width: 480px) {
   .modal-container {
     width: 95%;
     box-shadow: 8px 8px 0px #000;
@@ -716,5 +1189,148 @@ footer {
   .modal-cta {
     font-size: 1rem;
     padding: 15px;
+  }
+}
+
+/* Medium Devices (Phones 481px - 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+  .modal-container {
+    width: 90%;
+    max-width: 480px;
+  }
+
+  .modal-header h2 {
+    font-size: 2.2rem;
+  }
+
+  .modal-benefits li {
+    font-size: 0.85rem;
+    padding: 12px 10px;
+  }
+
+  .modal-cta {
+    font-size: 1.1rem;
+    padding: 18px;
+  }
+}
+
+/* Large Mobile and Small Tablet (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .modal-container {
+    max-width: 520px;
+  }
+
+  .modal-header h2 {
+    font-size: 2.4rem;
+  }
+
+  .modal-benefits li {
+    font-size: 0.95rem;
+    padding: 15px 12px;
+  }
+
+  .modal-cta {
+    font-size: 1.2rem;
+    padding: 20px;
+  }
+}
+
+/* =========================================
+   FOOTER - MOBILE FIRST REFACTOR (2025)
+   ========================================= */
+footer {
+  padding: 20px;
+  margin-top: 40px;
+  background: #000;
+  color: #fff;
+  border-top: var(--border-width) solid #000;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  /* Default: Stacked (Mobile) */
+  align-items: center;
+  gap: 15px;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+.footer-brand,
+.footer-social {
+  display: flex;
+  flex-direction: column;
+  /* Default: Stacked (Mobile) */
+  align-items: center;
+  gap: 5px;
+}
+
+.footer-social {
+  padding-left: 0;
+  /* Default: No padding */
+}
+
+.footer-social::before {
+  display: none;
+  /* Default: HIDDEN on all mobile devices */
+  content: '|';
+  position: absolute;
+  left: 0;
+  color: var(--accent-primary);
+  font-weight: bold;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.brand-link,
+.social-link {
+  color: #ccff00;
+  /* Accent Primary (Neon Green) */
+  text-decoration: none;
+  background: #333;
+  padding: 2px 5px;
+  transition: all 0.2s;
+}
+
+.brand-link:hover,
+.social-link:hover {
+  background: var(--accent-secondary);
+  color: #fff;
+}
+
+.footer-tagline {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.7rem;
+  opacity: 1;
+  color: #ccff00;
+  /* Accent Primary */
+  font-weight: bold;
+}
+
+/* DESKTOP OVERRIDES (min-width: 769px) */
+@media (min-width: 769px) {
+  .footer-content {
+    flex-direction: row;
+    /* Desktop: Row */
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .footer-brand,
+  .footer-social {
+    flex-direction: row;
+    /* Desktop: Row */
+    gap: 10px;
+  }
+
+  .footer-social {
+    padding-left: 15px;
+    /* Desktop: Space for divider */
+  }
+
+  .footer-social::before {
+    display: block;
+    /* Desktop: Visible */
   }
 }

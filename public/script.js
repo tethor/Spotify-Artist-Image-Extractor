@@ -15,15 +15,14 @@ document.addEventListener('DOMContentLoaded', function () {
     en: {
       title: 'Spotify<br>Extractor',
       subtitle: 'Image Extraction Tool',
-      input_placeholder: 'PASTE URL OR TYPE ARTIST NAME...',
+      input_placeholder: 'TYPE ARTIST NAME OR PASTE URL...',
       extract_btn: 'EXTRACT IMAGE',
       mobile_option: 'Mobile (Profile)',
       desktop_option: 'Desktop (Banner)',
       instructions_title: '// INSTRUCTIONS',
-      instr_1: 'COPY URL OR TYPE ARTIST NAME',
-      instr_2: 'PASTE/TYPE INTO INPUT FIELD',
-      instr_3: 'SELECT ASSET TYPE',
-      instr_4: 'EXECUTE EXTRACTION',
+      instr_1: 'TYPE ARTIST NAME OR PASTE URL...',
+      instr_2: 'SELECT IMAGE TYPE',
+      instr_3: 'EXECUTE EXTRACTION',
       note_label: 'NOTE:',
       note_text: 'DESKTOP EXTRACTION USES HEADLESS BROWSER. MAY BE SLOWER.',
       example_label: 'EXAMPLE URL:',
@@ -52,7 +51,24 @@ document.addEventListener('DOMContentLoaded', function () {
       benefit_3: '💰 DISCOUNTS & PROMOTIONS',
       benefit_4: '📦 SHIPPING ACROSS MEXICO',
       modal_cta: 'FOLLOW @POCAPAY_MX',
-      modal_dont_show: "DON'T SHOW THIS AGAIN"
+      modal_dont_show: "DON'T SHOW THIS AGAIN",
+      // Nuevas traducciones para meta tags
+      page_title: 'SPOTIFY_EXTRACTOR // V1.0',
+      og_title: 'Spotify Extractor // Image Extraction Tool',
+      og_description: 'Extract high-quality artist images (Profile and Banner) from Spotify. Neo-Brutalist Design. Free and Open Source.',
+      twitter_title: 'Spot Extractor // Image Extraction Tool',
+      twitter_description: 'Extract artist images from Spotify. Mobile and Desktop Support.',
+      seo_keywords: 'spotify download image, spotify artist image, spotify banner extractor, download spotify cover, spotify tools, pocapay, kpop',
+      meta_description: 'Extract high-quality artist images from Spotify. Free tool by POCAPAY GO for the K-POP community.',
+      // New translations
+      loading_mobile: '// GETTING PROFILE IMAGE...',
+      loading_desktop: '// EXTRACTING BANNER (MAY TAKE A WHILE)...',
+      error_invalid_url: 'Please enter a valid Spotify URL or artist name',
+      clipboard_copied: 'COPIED TO CLIPBOARD!',
+      clipboard_ready: 'URL READY TO COPY!',
+      image_alt_mobile: 'Mobile image',
+      image_alt_desktop: 'Desktop image',
+      banner_fallback: 'BANNER'
     },
     es: {
       title: 'Spotify<br>Extractor',
@@ -62,10 +78,9 @@ document.addEventListener('DOMContentLoaded', function () {
       mobile_option: 'Móvil (Perfil)',
       desktop_option: 'Escritorio (Banner)',
       instructions_title: '// INSTRUCCIONES',
-      instr_1: 'COPIA URL O ESCRIBE NOMBRE ARTISTA',
-      instr_2: 'PEGA/ESCRIBE EN EL CAMPO',
-      instr_3: 'SELECCIONA TIPO DE ASSET',
-      instr_4: 'EJECUTAR EXTRACCIÓN',
+      instr_1: 'ESCRIBE NOMBRE DEL ARTISTA O PEGA URL...',
+      instr_2: 'SELECCIONA TIPO DE IMAGEN',
+      instr_3: 'EJECUTAR EXTRACCIÓN',
       note_label: 'NOTA:',
       note_text: 'EXTRACCIÓN DE ESCRITORIO USA NAVEGADOR HEADLESS. PUEDE SER MÁS LENTO.',
       example_label: 'URL EJEMPLO:',
@@ -94,7 +109,24 @@ document.addEventListener('DOMContentLoaded', function () {
       benefit_3: '💰 DESCUENTOS Y PROMOCIONES',
       benefit_4: '📦 ENVÍOS A TODO MÉXICO',
       modal_cta: 'SEGUIR @POCAPAY_MX',
-      modal_dont_show: 'NO MOSTRAR DE NUEVO'
+      modal_dont_show: 'NO MOSTRAR DE NUEVO',
+      // Nuevas traducciones para meta tags
+      page_title: 'SPOTIFY_EXTRACTOR // V1.0',
+      og_title: 'Spotify Extractor // Herramienta de Extracción de Imágenes',
+      og_description: 'Extrae imágenes de artistas en alta calidad (Perfil y Banner) desde Spotify. Diseño Neo-Brutalista. Gratis y Open Source.',
+      twitter_title: 'Spotify Extractor // Herramienta de Extracción',
+      twitter_description: 'Extrae imágenes de artistas desde Spotify. Soporte Móvil y Escritorio.',
+      seo_keywords: 'spotify descargar imagen, spotify imagen artista, spotify banner extractor, descargar portada spotify, herramientas spotify, pocapay, kpop',
+      meta_description: 'Extrae imágenes de artistas en alta calidad desde Spotify. Herramienta gratuita por POCAPAY GO para la comunidad K-POP.',
+      // Nuevas traducciones
+      loading_mobile: '// OBTENIENDO IMAGEN DE PERFIL...',
+      loading_desktop: '// EXTRAYENDO BANNER (PUEDE TARDAR)...',
+      error_invalid_url: 'Por favor ingresa una URL de Spotify válida o nombre de artista',
+      clipboard_copied: '¡COPIADO AL PORTAPAPELES!',
+      clipboard_ready: '¡URL LISTA PARA COPIAR!',
+      image_alt_mobile: 'Imagen Móvil',
+      image_alt_desktop: 'Imagen Escritorio',
+      banner_fallback: 'BANNER'
     }
   };
 
@@ -135,6 +167,61 @@ document.addEventListener('DOMContentLoaded', function () {
     } else {
       extractBtn.textContent = t.extract_btn;
     }
+
+    // Update meta tags content
+    document.querySelectorAll('[data-i18n-title]').forEach(el => {
+      const key = el.getAttribute('data-i18n-title');
+      if (t[key]) {
+        el.textContent = t[key];
+        // Also update the document title
+        document.title = t[key];
+      }
+    });
+
+    document.querySelectorAll('[data-i18n-og-title]').forEach(el => {
+      const key = el.getAttribute('data-i18n-og-title');
+      if (t[key]) {
+        el.setAttribute('content', t[key]);
+      }
+    });
+
+    document.querySelectorAll('[data-i18n-og-desc]').forEach(el => {
+      const key = el.getAttribute('data-i18n-og-desc');
+      if (t[key]) {
+        el.setAttribute('content', t[key]);
+      }
+    });
+
+    document.querySelectorAll('[data-i18n-twitter-title]').forEach(el => {
+      const key = el.getAttribute('data-i18n-twitter-title');
+      if (t[key]) {
+        el.setAttribute('content', t[key]);
+      }
+    });
+
+    document.querySelectorAll('[data-i18n-twitter-desc]').forEach(el => {
+      const key = el.getAttribute('data-i18n-twitter-desc');
+      if (t[key]) {
+        el.setAttribute('content', t[key]);
+      }
+    });
+
+    document.querySelectorAll('[data-i18n-desc]').forEach(el => {
+      const key = el.getAttribute('data-i18n-desc');
+      if (t[key]) {
+        el.setAttribute('content', t[key]);
+      }
+    });
+
+    document.querySelectorAll('[data-i18n-keywords]').forEach(el => {
+      const key = el.getAttribute('data-i18n-keywords');
+      if (t[key]) {
+        el.setAttribute('content', t[key]);
+      }
+    });
+
+    // Update HTML lang attribute
+    document.documentElement.lang = currentLang;
   }
 
   // Example URL click to copy
@@ -143,7 +230,7 @@ document.addEventListener('DOMContentLoaded', function () {
     navigator.clipboard.writeText(url)
       .then(() => {
         const originalText = exampleUrl.textContent;
-        exampleUrl.textContent = 'COPIED TO CLIPBOARD!';
+        exampleUrl.textContent = translations[currentLang].clipboard_copied;
         setTimeout(() => {
           exampleUrl.textContent = originalText;
         }, 1500);
@@ -152,7 +239,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Fallback para HTTP o navegadores sin soporte
         console.warn('Clipboard API failed:', err);
         const originalText = exampleUrl.textContent;
-        exampleUrl.textContent = 'URL READY TO COPY!';
+        exampleUrl.textContent = translations[currentLang].clipboard_ready;
         setTimeout(() => {
           exampleUrl.textContent = originalText;
         }, 1500);
@@ -186,17 +273,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const isSearch = !isUrl && spotifyUrl.length > 0;
 
     if (!isUrl && !isSearch) {
-      const errorMsg = currentLang === 'es'
-        ? 'Por favor ingresa una URL de Spotify válida o nombre de artista'
-        : 'Please enter a valid Spotify URL or artist name';
-      showError(errorMsg);
+      showError(translations[currentLang].error_invalid_url);
       return;
     }
 
     // Show loading with descriptive message based on type
     const loadingMsg = selectedImageType === 'mobile'
-      ? (currentLang === 'es' ? '// OBTENIENDO IMAGEN DE PERFIL...' : '// GETTING PROFILE IMAGE...')
-      : (currentLang === 'es' ? '// EXTRAYENDO BANNER (PUEDE TARDAR)...' : '// EXTRACTING BANNER (MAY TAKE A WHILE)...');
+      ? translations[currentLang].loading_mobile
+      : translations[currentLang].loading_desktop;
 
     loadingElement.textContent = loadingMsg;
     loadingElement.style.display = 'block';
@@ -243,7 +327,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (artistData.genres && artistData.followers) {
       artistDetailsElement.textContent = `${t.genres}: ${artistData.genres.slice(0, 3).join(', ').toUpperCase()} // ${t.followers}: ${formatNumber(artistData.followers)}`;
     } else {
-      artistDetailsElement.textContent = (artistData.note || 'Banner extracted from Spotify webpage').toUpperCase();
+      artistDetailsElement.textContent = (artistData.note || t.banner_fallback).toUpperCase();
     }
 
     // Clear previous images
@@ -257,7 +341,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const img = document.createElement('img');
     img.src = selectedImage.url;
-    img.alt = `${artistName} - ${imageType === 'mobile' ? 'Mobile' : 'Desktop'} image`;
+    img.alt = `${artistName} - ${imageType === 'mobile' ? t.image_alt_mobile : t.image_alt_desktop}`;
 
     // Meta info
     const metaDiv = document.createElement('div');
@@ -414,6 +498,34 @@ document.addEventListener('DOMContentLoaded', function () {
       }, 3000);
     }
   };
+
+  // Mobile Instructions Toggle
+  const instructions = document.querySelector('.instructions');
+  if (instructions && window.innerWidth <= 319) {
+    const instructionsTitle = instructions.querySelector('h3') || instructions.querySelector('h2') || instructions.firstElementChild;
+
+    if (instructionsTitle) {
+      instructionsTitle.style.cursor = 'pointer';
+      instructionsTitle.addEventListener('click', () => {
+        instructions.classList.toggle('show');
+        const toggleIcon = instructionsTitle.querySelector('.toggle-icon') || document.createElement('span');
+        if (!toggleIcon.classList.contains('toggle-icon')) {
+          toggleIcon.className = 'toggle-icon';
+          toggleIcon.style.marginLeft = '8px';
+          if (!instructionsTitle.querySelector('.toggle-icon')) {
+            toggleIcon.textContent = instructions.classList.contains('show') ? '-' : '+';
+            instructionsTitle.appendChild(toggleIcon);
+          }
+        }
+        toggleIcon.textContent = instructions.classList.contains('show') ? '-' : '+';
+      });
+
+      // Initially collapsed on ultra small devices
+      if (!instructions.classList.contains('show')) {
+        instructions.style.maxHeight = '40px';
+      }
+    }
+  }
 
   // Event Listeners
   document.addEventListener('mouseleave', handleMouseLeave);
