@@ -1,193 +1,301 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>SPOTIFY_EXTRACTOR // V1.0</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            rel="preload"
+            href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+            as="style"
+            onload="this.onload=null;this.rel='stylesheet'"
+        />
+        <noscript>
+            <link
+                rel="stylesheet"
+                href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+            />
+        </noscript>
+        <link rel="stylesheet" href="style.css" />
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SPOTIFY_EXTRACTOR // V1.0</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload"
-    href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" as="style"
-    onload="this.onload=null;this.rel='stylesheet'">
-  <noscript>
-    <link rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap">
-  </noscript>
-  <link rel="stylesheet" href="style.css">
+        <!-- Open Graph / Social Media Meta Tags -->
+        <meta
+            property="og:title"
+            content="Spotify Extractor // Herramienta de Extracción de Imágenes"
+        />
+        <meta
+            property="og:description"
+            content="Extrae imágenes de artistas en alta calidad (Perfil y Banner) desde Spotify. Diseño Neo-Brutalista. Gratis y Open Source."
+        />
+        <meta
+            property="og:image"
+            content="https://spotify.pocapay.com/og-image.jpg"
+        />
+        <meta property="og:url" content="https://spotify.pocapay.com" />
+        <meta property="og:type" content="website" />
 
-  <!-- Open Graph / Social Media Meta Tags -->
-  <meta property="og:title" content="Spotify Extractor // Herramienta de Extracción de Imágenes">
-  <meta property="og:description"
-    content="Extrae imágenes de artistas en alta calidad (Perfil y Banner) desde Spotify. Diseño Neo-Brutalista. Gratis y Open Source.">
-  <meta property="og:image" content="https://spotify.pocapay.com/og-image.png">
-  <meta property="og:url" content="https://spotify.pocapay.com">
-  <meta property="og:type" content="website">
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+            name="twitter:title"
+            content="Spotify Extractor // Herramienta de Extracción"
+        />
+        <meta
+            name="twitter:description"
+            content="Extrae imágenes de artistas desde Spotify. Soporte Móvil y Escritorio."
+        />
+        <meta
+            name="twitter:image"
+            content="https://spotify.pocapay.com/og-image.png"
+        />
 
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Spotify Extractor // Herramienta de Extracción">
-  <meta name="twitter:description" content="Extrae imágenes de artistas desde Spotify. Soporte Móvil y Escritorio.">
-  <meta name="twitter:image" content="https://spotify.pocapay.com/og-image.png">
+        <!-- SEO & Canonical -->
+        <link rel="canonical" href="https://spotify.pocapay.com" />
+        <meta
+            name="keywords"
+            content="spotify descargar imagen, spotify imagen artista, spotify banner extractor, descargar portada spotify, herramientas spotify, pocapay, kpop"
+        />
+        <meta name="robots" content="index, follow" />
+        <meta
+            name="description"
+            content="Extrae imágenes de artistas en alta calidad desde Spotify. Herramienta gratuita por POCAPAY GO para la comunidad K-POP."
+        />
 
-  <!-- SEO & Canonical -->
-  <link rel="canonical" href="https://spotify.pocapay.com">
-  <meta name="keywords"
-    content="spotify descargar imagen, spotify imagen artista, spotify banner extractor, descargar portada spotify, herramientas spotify, pocapay, kpop">
-  <meta name="robots" content="index, follow">
-  <meta name="description"
-    content="Extrae imágenes de artistas en alta calidad desde Spotify. Herramienta gratuita por POCAPAY GO para la comunidad K-POP.">
+        <!-- Structured Data (JSON-LD) -->
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "WebApplication",
+                "name": "Spotify Artist Image Extractor",
+                "url": "https://spotify.pocapay.com",
+                "description": "Una herramienta para extraer imágenes de artistas y banners en alta calidad desde Spotify.",
+                "applicationCategory": "MultimediaApplication",
+                "operatingSystem": "Any",
+                "inLanguage": "es-MX",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "MXN"
+                },
+                "author": {
+                    "@type": "Organization",
+                    "name": "POCAPAY GO",
+                    "url": "https://www.instagram.com/pocapay_mx/"
+                }
+            }
+        </script>
+    </head>
 
+    <body>
+        <div class="container">
+            <header>
+                <div class="lang-switch">
+                    <button id="langBtn" class="lang-btn">ES/EN</button>
+                </div>
+                <h1 data-i18n="title">Spotify<br />Extractor</h1>
+                <div class="subtitle" data-i18n="subtitle">
+                    Image Extraction Tool
+                </div>
+                <div class="brand-tag" data-i18n="brand_tag">
+                    BY POCAPAY GO // FREE K-POP TOOLS
+                </div>
+            </header>
 
-  <!-- Structured Data (JSON-LD) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Spotify Artist Image Extractor",
-    "url": "https://spotify.pocapay.com",
-    "description": "Una herramienta para extraer imágenes de artistas y banners en alta calidad desde Spotify.",
-    "applicationCategory": "MultimediaApplication",
-    "operatingSystem": "Any",
-    "inLanguage": "es-MX",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "MXN"
-    },
-    "author": {
-      "@type": "Organization",
-      "name": "POCAPAY GO",
-      "url": "https://www.instagram.com/pocapay_mx/"
-    }
-  }
-  </script>
-</head>
+            <main>
+                <section class="input-section">
+                    <div class="input-group">
+                        <input
+                            type="text"
+                            id="spotifyUrl"
+                            placeholder="TYPE ARTIST NAME OR PASTE URL..."
+                            autocomplete="off"
+                            data-i18n-placeholder="input_placeholder"
+                        />
+                        <button id="extractBtn" data-i18n="extract_btn">
+                            EXTRACT IMAGE
+                        </button>
+                    </div>
 
-<body>
-  <div class="container">
-    <header>
-      <div class="lang-switch">
-        <button id="langBtn" class="lang-btn">ES/EN</button>
-      </div>
-      <h1 data-i18n="title">Spotify<br>Extractor</h1>
-      <div class="subtitle" data-i18n="subtitle">Image Extraction Tool</div>
-      <div class="brand-tag" data-i18n="brand_tag">BY POCAPAY GO // FREE K-POP TOOLS</div>
-    </header>
+                    <div class="image-type-selector">
+                        <label class="radio-label">
+                            <input
+                                type="radio"
+                                name="imageType"
+                                value="mobile"
+                                checked
+                            />
+                            <div class="radio-indicator"></div>
+                            <span data-i18n="mobile_option"
+                                >Mobile (Profile)</span
+                            >
+                        </label>
+                        <label class="radio-label">
+                            <input
+                                type="radio"
+                                name="imageType"
+                                value="desktop"
+                            />
+                            <div class="radio-indicator"></div>
+                            <span data-i18n="desktop_option"
+                                >Desktop (Banner)</span
+                            >
+                        </label>
+                    </div>
 
-    <main>
-      <section class="input-section">
-        <div class="input-group">
-          <input type="text" id="spotifyUrl" placeholder="TYPE ARTIST NAME OR PASTE URL..." autocomplete="off"
-            data-i18n-placeholder="input_placeholder">
-          <button id="extractBtn" data-i18n="extract_btn">EXTRACT IMAGE</button>
+                    <div class="instructions">
+                        <h3 data-i18n="instructions_title">// INSTRUCTIONS</h3>
+                        <ul>
+                            <li data-i18n="instr_1">
+                                COPY URL OR TYPE ARTIST NAME
+                            </li>
+                            <li data-i18n="instr_2">
+                                PASTE/TYPE INTO INPUT FIELD
+                            </li>
+                            <li data-i18n="instr_3">SELECT ASSET TYPE</li>
+                            <li data-i18n="instr_4">EXECUTE EXTRACTION</li>
+                        </ul>
+                        <p
+                            style="
+                                margin-top: 15px;
+                                font-size: 0.8rem;
+                                text-transform: uppercase;
+                            "
+                        >
+                            <strong data-i18n="note_label">NOTE:</strong>
+                            <span data-i18n="note_text"
+                                >DESKTOP EXTRACTION USES HEADLESS BROWSER. MAY
+                                BE SLOWER.</span
+                            >
+                        </p>
+                        <p
+                            style="
+                                margin-top: 10px;
+                                font-size: 0.8rem;
+                                border-top: 1px dashed #000;
+                                padding-top: 10px;
+                            "
+                        >
+                            <strong data-i18n="example_label"
+                                >EXAMPLE URL:</strong
+                            >
+                            <code
+                                style="
+                                    display: block;
+                                    margin-top: 5px;
+                                    word-break: break-all;
+                                    cursor: pointer;
+                                "
+                                id="exampleUrl"
+                                title="Click to copy"
+                                >https://open.spotify.com/artist/3Nrfpe0tUJi4K4DXYWgMUX</code
+                            >
+                        </p>
+                    </div>
+                </section>
+
+                <div class="loading" id="loading" data-i18n="loading">
+                    // PROCESSING REQUEST...
+                </div>
+
+                <div class="error" id="error"></div>
+
+                <section class="result-section" id="resultSection">
+                    <div class="artist-info">
+                        <h2 class="artist-name" id="artistName"></h2>
+                        <p class="artist-details" id="artistDetails"></p>
+                    </div>
+                    <div
+                        class="artist-image-container"
+                        id="imageContainer"
+                    ></div>
+                </section>
+            </main>
+
+            <footer>
+                <div class="footer-content">
+                    <div class="footer-brand">
+                        <span data-i18n="brought_by">BROUGHT TO YOU BY</span>
+                        <a
+                            href="https://pocapay.com"
+                            target="_blank"
+                            class="brand-link"
+                        >
+                            POCAPAY GO
+                        </a>
+                    </div>
+                    <div class="footer-divider">|</div>
+                    <div class="footer-social">
+                        <span data-i18n="follow_us">FOLLOW US</span>
+                        <a
+                            href="https://www.instagram.com/pocapay_mx/"
+                            target="_blank"
+                            class="social-link"
+                        >
+                            @POCAPAY_MX
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-tagline" data-i18n="footer_tagline">
+                    FREE TOOLS FOR THE K-POP COMMUNITY 💜
+                </div>
+            </footer>
         </div>
 
-        <div class="image-type-selector">
-          <label class="radio-label">
-            <input type="radio" name="imageType" value="mobile" checked>
-            <div class="radio-indicator"></div>
-            <span data-i18n="mobile_option">Mobile (Profile)</span>
-          </label>
-          <label class="radio-label">
-            <input type="radio" name="imageType" value="desktop">
-            <div class="radio-indicator"></div>
-            <span data-i18n="desktop_option">Desktop (Banner)</span>
-          </label>
+        <!-- Instagram Engagement Modal -->
+        <div id="instagramModal" class="modal-overlay">
+            <div class="modal-container">
+                <button
+                    class="modal-close"
+                    id="modalClose"
+                    aria-label="Close modal"
+                >
+                    ✕
+                </button>
+
+                <div class="modal-header">
+                    <h2 data-i18n="modal_title">// WAIT!</h2>
+                    <p class="modal-subtitle" data-i18n="modal_subtitle">
+                        GET EXCLUSIVE ACCESS
+                    </p>
+                </div>
+
+                <div class="modal-body">
+                    <p class="modal-intro" data-i18n="modal_intro">
+                        FOLLOW @POCAPAY_MX ON INSTAGRAM FOR:
+                    </p>
+
+                    <ul class="modal-benefits">
+                        <li data-i18n="benefit_1">
+                            💿 ÁLBUMES K-POP OFICIALES
+                        </li>
+                        <li data-i18n="benefit_2">🎁 PREVENTAS EXCLUSIVAS</li>
+                        <li data-i18n="benefit_3">
+                            💰 DESCUENTOS Y PROMOCIONES
+                        </li>
+                        <li data-i18n="benefit_4">📦 ENVÍOS A TODO MÉXICO</li>
+                    </ul>
+
+                    <a
+                        href="https://www.instagram.com/pocapay_mx/"
+                        target="_blank"
+                        class="modal-cta"
+                        id="modalCTA"
+                    >
+                        <span data-i18n="modal_cta">FOLLOW @POCAPAY_MX</span>
+                    </a>
+
+                    <label class="modal-checkbox">
+                        <input type="checkbox" id="dontShowAgain" />
+                        <span data-i18n="modal_dont_show"
+                            >DON'T SHOW THIS AGAIN</span
+                        >
+                    </label>
+                </div>
+            </div>
         </div>
 
-        <div class="instructions">
-          <h3 data-i18n="instructions_title">// INSTRUCTIONS</h3>
-          <ul>
-            <li data-i18n="instr_1">COPY URL OR TYPE ARTIST NAME</li>
-            <li data-i18n="instr_2">PASTE/TYPE INTO INPUT FIELD</li>
-            <li data-i18n="instr_3">SELECT ASSET TYPE</li>
-            <li data-i18n="instr_4">EXECUTE EXTRACTION</li>
-          </ul>
-          <p style="margin-top: 15px; font-size: 0.8rem; text-transform: uppercase;">
-            <strong data-i18n="note_label">NOTE:</strong> <span data-i18n="note_text">DESKTOP EXTRACTION USES HEADLESS
-              BROWSER. MAY BE SLOWER.</span>
-          </p>
-          <p style="margin-top: 10px; font-size: 0.8rem; border-top: 1px dashed #000; padding-top: 10px;">
-            <strong data-i18n="example_label">EXAMPLE URL:</strong>
-            <code style="display: block; margin-top: 5px; word-break: break-all; cursor: pointer;" id="exampleUrl"
-              title="Click to copy">https://open.spotify.com/artist/3Nrfpe0tUJi4K4DXYWgMUX</code>
-          </p>
-        </div>
-      </section>
-
-      <div class="loading" id="loading" data-i18n="loading">
-        // PROCESSING REQUEST...
-      </div>
-
-      <div class="error" id="error"></div>
-
-      <section class="result-section" id="resultSection">
-        <div class="artist-info">
-          <h2 class="artist-name" id="artistName"></h2>
-          <p class="artist-details" id="artistDetails"></p>
-        </div>
-        <div class="artist-image-container" id="imageContainer"></div>
-      </section>
-    </main>
-
-    <footer>
-      <div class="footer-content">
-        <div class="footer-brand">
-          <span data-i18n="brought_by">BROUGHT TO YOU BY</span>
-          <a href="https://pocapay.com" target="_blank" class="brand-link">
-            POCAPAY GO
-          </a>
-        </div>
-        <div class="footer-divider">|</div>
-        <div class="footer-social">
-          <span data-i18n="follow_us">FOLLOW US</span>
-          <a href="https://www.instagram.com/pocapay_mx/" target="_blank" class="social-link">
-            @POCAPAY_MX
-          </a>
-        </div>
-      </div>
-      <div class="footer-tagline" data-i18n="footer_tagline">
-        FREE TOOLS FOR THE K-POP COMMUNITY 💜
-      </div>
-    </footer>
-  </div>
-
-  <!-- Instagram Engagement Modal -->
-  <div id="instagramModal" class="modal-overlay">
-    <div class="modal-container">
-      <button class="modal-close" id="modalClose" aria-label="Close modal">✕</button>
-
-      <div class="modal-header">
-        <h2 data-i18n="modal_title">// WAIT!</h2>
-        <p class="modal-subtitle" data-i18n="modal_subtitle">GET EXCLUSIVE ACCESS</p>
-      </div>
-
-      <div class="modal-body">
-        <p class="modal-intro" data-i18n="modal_intro">
-          FOLLOW @POCAPAY_MX ON INSTAGRAM FOR:
-        </p>
-
-        <ul class="modal-benefits">
-          <li data-i18n="benefit_1">💿 ÁLBUMES K-POP OFICIALES</li>
-          <li data-i18n="benefit_2">🎁 PREVENTAS EXCLUSIVAS</li>
-          <li data-i18n="benefit_3">💰 DESCUENTOS Y PROMOCIONES</li>
-          <li data-i18n="benefit_4">📦 ENVÍOS A TODO MÉXICO</li>
-        </ul>
-
-        <a href="https://www.instagram.com/pocapay_mx/" target="_blank" class="modal-cta" id="modalCTA">
-          <span data-i18n="modal_cta">FOLLOW @POCAPAY_MX</span>
-        </a>
-
-        <label class="modal-checkbox">
-          <input type="checkbox" id="dontShowAgain">
-          <span data-i18n="modal_dont_show">DON'T SHOW THIS AGAIN</span>
-        </label>
-      </div>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
-</body>
-
+        <script src="script.js"></script>
+    </body>
 </html>
