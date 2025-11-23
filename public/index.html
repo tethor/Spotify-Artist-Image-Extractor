@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
   <meta charset="UTF-8">
@@ -7,29 +7,37 @@
   <title>SPOTIFY_EXTRACTOR // V1.0</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
-    rel="stylesheet">
+  <link rel="preload"
+    href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" as="style"
+    onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap">
+  </noscript>
   <link rel="stylesheet" href="style.css">
 
   <!-- Open Graph / Social Media Meta Tags -->
-  <meta property="og:title" content="Spotify Extractor // Asset Retrieval Tool">
+  <meta property="og:title" content="Spotify Extractor // Herramienta de Extracción de Imágenes">
   <meta property="og:description"
-    content="Extract high-quality artist images (Profile & Banner) from Spotify. Neo-Brutalist design. Free & Open Source.">
+    content="Extrae imágenes de artistas en alta calidad (Perfil y Banner) desde Spotify. Diseño Neo-Brutalista. Gratis y Open Source.">
   <meta property="og:image" content="https://spotify.pocapay.com/og-image.png">
   <meta property="og:url" content="https://spotify.pocapay.com">
   <meta property="og:type" content="website">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Spotify Extractor // Asset Retrieval Tool">
-  <meta name="twitter:description" content="Extract high-quality artist images from Spotify. Mobile & Desktop support.">
+  <meta name="twitter:title" content="Spotify Extractor // Herramienta de Extracción">
+  <meta name="twitter:description" content="Extrae imágenes de artistas desde Spotify. Soporte Móvil y Escritorio.">
   <meta name="twitter:image" content="https://spotify.pocapay.com/og-image.png">
 
   <!-- SEO & Canonical -->
   <link rel="canonical" href="https://spotify.pocapay.com">
   <meta name="keywords"
-    content="spotify image downloader, spotify artist image, spotify banner extractor, download spotify cover, spotify tools, pocapay">
+    content="spotify descargar imagen, spotify imagen artista, spotify banner extractor, descargar portada spotify, herramientas spotify, pocapay, kpop">
   <meta name="robots" content="index, follow">
+  <meta name="description"
+    content="Extrae imágenes de artistas en alta calidad desde Spotify. Herramienta gratuita por POCAPAY GO para la comunidad K-POP.">
+
 
   <!-- Structured Data (JSON-LD) -->
   <script type="application/ld+json">
@@ -38,13 +46,14 @@
     "@type": "WebApplication",
     "name": "Spotify Artist Image Extractor",
     "url": "https://spotify.pocapay.com",
-    "description": "A tool to extract high-quality artist images and banners from Spotify.",
+    "description": "Una herramienta para extraer imágenes de artistas y banners en alta calidad desde Spotify.",
     "applicationCategory": "MultimediaApplication",
     "operatingSystem": "Any",
+    "inLanguage": "es-MX",
     "offers": {
       "@type": "Offer",
       "price": "0",
-      "priceCurrency": "USD"
+      "priceCurrency": "MXN"
     },
     "author": {
       "@type": "Organization",
@@ -59,10 +68,11 @@
   <div class="container">
     <header>
       <div class="lang-switch">
-        <button id="langBtn" class="lang-btn">EN/ES</button>
+        <button id="langBtn" class="lang-btn">ES/EN</button>
       </div>
       <h1 data-i18n="title">Spotify<br>Extractor</h1>
       <div class="subtitle" data-i18n="subtitle">Image Extraction Tool</div>
+      <div class="brand-tag" data-i18n="brand_tag">BY POCAPAY GO // FREE K-POP TOOLS</div>
     </header>
 
     <main>
@@ -123,12 +133,58 @@
 
     <footer>
       <div class="footer-content">
-        <span data-i18n="created_by">CREATED BY</span>
-        <a href="https://www.instagram.com/pocapay_mx/" target="_blank" class="social-link">
-          INSTAGRAM: @POCAPAY_MX
-        </a>
+        <div class="footer-brand">
+          <span data-i18n="brought_by">BROUGHT TO YOU BY</span>
+          <a href="https://pocapay.com" target="_blank" class="brand-link">
+            POCAPAY GO
+          </a>
+        </div>
+        <div class="footer-divider">|</div>
+        <div class="footer-social">
+          <span data-i18n="follow_us">FOLLOW US</span>
+          <a href="https://www.instagram.com/pocapay_mx/" target="_blank" class="social-link">
+            @POCAPAY_MX
+          </a>
+        </div>
+      </div>
+      <div class="footer-tagline" data-i18n="footer_tagline">
+        FREE TOOLS FOR THE K-POP COMMUNITY 💜
       </div>
     </footer>
+  </div>
+
+  <!-- Instagram Engagement Modal -->
+  <div id="instagramModal" class="modal-overlay">
+    <div class="modal-container">
+      <button class="modal-close" id="modalClose" aria-label="Close modal">✕</button>
+
+      <div class="modal-header">
+        <h2 data-i18n="modal_title">// WAIT!</h2>
+        <p class="modal-subtitle" data-i18n="modal_subtitle">GET EXCLUSIVE ACCESS</p>
+      </div>
+
+      <div class="modal-body">
+        <p class="modal-intro" data-i18n="modal_intro">
+          FOLLOW @POCAPAY_MX ON INSTAGRAM FOR:
+        </p>
+
+        <ul class="modal-benefits">
+          <li data-i18n="benefit_1">💿 ÁLBUMES K-POP OFICIALES</li>
+          <li data-i18n="benefit_2">🎁 PREVENTAS EXCLUSIVAS</li>
+          <li data-i18n="benefit_3">💰 DESCUENTOS Y PROMOCIONES</li>
+          <li data-i18n="benefit_4">📦 ENVÍOS A TODO MÉXICO</li>
+        </ul>
+
+        <a href="https://www.instagram.com/pocapay_mx/" target="_blank" class="modal-cta" id="modalCTA">
+          <span data-i18n="modal_cta">FOLLOW @POCAPAY_MX</span>
+        </a>
+
+        <label class="modal-checkbox">
+          <input type="checkbox" id="dontShowAgain">
+          <span data-i18n="modal_dont_show">DON'T SHOW THIS AGAIN</span>
+        </label>
+      </div>
+    </div>
   </div>
 
   <script src="script.js"></script>

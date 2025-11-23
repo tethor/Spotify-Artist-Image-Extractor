@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
       loading: '// PROCESSING REQUEST...',
       error_url: 'Please enter a URL or Artist Name',
       extracting: 'EXTRACTING...',
-      download_asset: 'DOWNLOAD_ASSET',
+      download_asset: 'DOWNLOAD IMAGE',
       mobile_profile: 'MOBILE_PROFILE',
       desktop_banner: 'DESKTOP_BANNER',
       unknown_size: 'UNKNOWN SIZE',
@@ -40,7 +40,19 @@ document.addEventListener('DOMContentLoaded', function () {
       local_fallback: 'LOCAL SCRAPER (FALLBACK)',
       genres: 'GENRES',
       followers: 'FOLLOWERS',
-      created_by: 'CREATED BY'
+      brand_tag: 'BY POCAPAY GO // FREE K-POP TOOLS',
+      brought_by: 'BROUGHT TO YOU BY',
+      follow_us: 'FOLLOW US',
+      footer_tagline: 'FREE TOOLS FOR THE K-POP COMMUNITY 💜',
+      modal_title: '// WAIT!',
+      modal_subtitle: 'GET EXCLUSIVE ACCESS',
+      modal_intro: 'FOLLOW @POCAPAY_MX ON INSTAGRAM FOR:',
+      benefit_1: '💿 OFFICIAL K-POP ALBUMS',
+      benefit_2: '🎁 EXCLUSIVE PRE-ORDERS',
+      benefit_3: '💰 DISCOUNTS & PROMOTIONS',
+      benefit_4: '📦 SHIPPING ACROSS MEXICO',
+      modal_cta: 'FOLLOW @POCAPAY_MX',
+      modal_dont_show: "DON'T SHOW THIS AGAIN"
     },
     es: {
       title: 'Spotify<br>Extractor',
@@ -60,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
       loading: '// PROCESANDO PETICIÓN...',
       error_url: 'Por favor ingresa una URL o Nombre',
       extracting: 'EXTRAYENDO...',
-      download_asset: 'DESCARGAR_ASSET',
+      download_asset: 'DESCARGAR IMAGEN',
       mobile_profile: 'PERFIL_MÓVIL',
       desktop_banner: 'BANNER_ESCRITORIO',
       unknown_size: 'TAMAÑO DESCONOCIDO',
@@ -70,11 +82,23 @@ document.addEventListener('DOMContentLoaded', function () {
       local_fallback: 'SCRAPER LOCAL (FALLBACK)',
       genres: 'GÉNEROS',
       followers: 'SEGUIDORES',
-      created_by: 'CREADO POR'
+      brand_tag: 'POR POCAPAY GO // HERRAMIENTAS K-POP GRATIS',
+      brought_by: 'TRAÍDO POR',
+      follow_us: 'SÍGUENOS',
+      footer_tagline: 'HERRAMIENTAS GRATIS PARA LA COMUNIDAD K-POP 💜',
+      modal_title: '// ¡ESPERA!',
+      modal_subtitle: 'OBTÉN ACCESO EXCLUSIVO',
+      modal_intro: 'SÍGUENOS EN INSTAGRAM @POCAPAY_MX PARA:',
+      benefit_1: '💿 ÁLBUMES K-POP OFICIALES',
+      benefit_2: '🎁 PREVENTAS EXCLUSIVAS',
+      benefit_3: '💰 DESCUENTOS Y PROMOCIONES',
+      benefit_4: '📦 ENVÍOS A TODO MÉXICO',
+      modal_cta: 'SEGUIR @POCAPAY_MX',
+      modal_dont_show: 'NO MOSTRAR DE NUEVO'
     }
   };
 
-  let currentLang = 'en';
+  let currentLang = 'es';
 
   // Language Switcher Logic
   langBtn.addEventListener('click', () => {
@@ -116,16 +140,30 @@ document.addEventListener('DOMContentLoaded', function () {
   // Example URL click to copy
   exampleUrl.addEventListener('click', () => {
     const url = exampleUrl.textContent;
-    navigator.clipboard.writeText(url).then(() => {
-      const originalText = exampleUrl.textContent;
-      exampleUrl.textContent = 'COPIED TO CLIPBOARD!';
-      setTimeout(() => {
-        exampleUrl.textContent = originalText;
-      }, 1500);
-    });
+    navigator.clipboard.writeText(url)
+      .then(() => {
+        const originalText = exampleUrl.textContent;
+        exampleUrl.textContent = 'COPIED TO CLIPBOARD!';
+        setTimeout(() => {
+          exampleUrl.textContent = originalText;
+        }, 1500);
+      })
+      .catch(err => {
+        // Fallback para HTTP o navegadores sin soporte
+        console.warn('Clipboard API failed:', err);
+        const originalText = exampleUrl.textContent;
+        exampleUrl.textContent = 'URL READY TO COPY!';
+        setTimeout(() => {
+          exampleUrl.textContent = originalText;
+        }, 1500);
+      });
+
     // Also fill input
     spotifyUrlInput.value = url;
   });
+
+  // Initialize language on page load
+  updateLanguage();
 
   extractBtn.addEventListener('click', extractArtistImages);
   spotifyUrlInput.addEventListener('keypress', function (e) {
@@ -143,7 +181,24 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    // Show loading, hide results and errors
+    // Validación básica mejorada
+    const isUrl = spotifyUrl.includes('spotify.com') || spotifyUrl.includes('spotify:');
+    const isSearch = !isUrl && spotifyUrl.length > 0;
+
+    if (!isUrl && !isSearch) {
+      const errorMsg = currentLang === 'es'
+        ? 'Por favor ingresa una URL de Spotify válida o nombre de artista'
+        : 'Please enter a valid Spotify URL or artist name';
+      showError(errorMsg);
+      return;
+    }
+
+    // Show loading with descriptive message based on type
+    const loadingMsg = selectedImageType === 'mobile'
+      ? (currentLang === 'es' ? '// OBTENIENDO IMAGEN DE PERFIL...' : '// GETTING PROFILE IMAGE...')
+      : (currentLang === 'es' ? '// EXTRAYENDO BANNER (PUEDE TARDAR)...' : '// EXTRACTING BANNER (MAY TAKE A WHILE)...');
+
+    loadingElement.textContent = loadingMsg;
     loadingElement.style.display = 'block';
     resultSection.style.display = 'none';
     errorElement.style.display = 'none';
@@ -284,4 +339,114 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     return num;
   }
+
+  // ============================================
+  // INSTAGRAM ENGAGEMENT MODAL LOGIC
+  // ============================================
+
+  const modal = document.getElementById('instagramModal');
+  const modalClose = document.getElementById('modalClose');
+  const modalCTA = document.getElementById('modalCTA');
+  const dontShowAgain = document.getElementById('dontShowAgain');
+
+  const MODAL_STORAGE_KEY = 'instagram_modal_dismissed';
+  let modalShown = false;
+  let exitIntentTriggered = false;
+  let modalTimeout = null; // Track timeout to prevent multiple modals
+  let exitIntentDebounce = null; // Debounce for exit-intent
+
+  // Check if user has dismissed the modal permanently
+  function shouldShowModal() {
+    return !localStorage.getItem(MODAL_STORAGE_KEY) && !modalShown;
+  }
+
+  // Show modal with animation
+  function showModal() {
+    if (shouldShowModal()) {
+      modal.classList.add('show');
+      modalShown = true;
+      document.body.style.overflow = 'hidden'; // Prevent scrolling
+    }
+  }
+
+  // Hide modal
+  function hideModal() {
+    modal.classList.remove('show');
+    document.body.style.overflow = ''; // Restore scrolling
+
+    // Save preference if checkbox is checked
+    if (dontShowAgain.checked) {
+      localStorage.setItem(MODAL_STORAGE_KEY, 'true');
+    }
+  }
+
+  // Exit-Intent Detection with debounce (modal disabled for exit-intent)
+  function handleMouseLeave(e) {
+    // Debounce to prevent multiple triggers
+    if (exitIntentDebounce) return;
+
+    // Trigger when mouse moves to top of viewport (leaving page)
+    if (e.clientY < 10 && !exitIntentTriggered && shouldShowModal()) {
+      exitIntentDebounce = setTimeout(() => {
+        exitIntentDebounce = null;
+      }, 100);
+
+      // showModal(); // Disabled: modal now only opens after image extraction
+      exitIntentTriggered = true;
+    }
+  }
+
+  // Post-Extraction Success Trigger
+  const originalDisplayResults = displayResults;
+  displayResults = function (artistData, imageType) {
+    originalDisplayResults(artistData, imageType);
+
+    // Clear any existing timeout to prevent multiple modals
+    if (modalTimeout) {
+      clearTimeout(modalTimeout);
+    }
+
+    // Show modal 3 seconds after successful extraction
+    if (shouldShowModal()) {
+      modalTimeout = setTimeout(() => {
+        showModal();
+        modalTimeout = null;
+      }, 3000);
+    }
+  };
+
+  // Event Listeners
+  document.addEventListener('mouseleave', handleMouseLeave);
+
+  // Mobile-friendly trigger (modal disabled for scroll)
+  // let scrollTriggered = false;
+  // window.addEventListener('scroll', () => {
+  //   if (scrollTriggered || !shouldShowModal()) return;
+  //
+  //   const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+  //
+  //   // Trigger at 50% scroll on mobile devices
+  //   if (scrollPercent > 50 && window.innerWidth <= 768) {
+  //     scrollTriggered = true;
+  //     setTimeout(() => {
+  //       showModal(); // Disabled: modal now only opens after image extraction
+  //     }, 1000); // Small delay after scroll threshold
+  //   }
+  // });
+
+  // Close modal on overlay click
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      hideModal();
+    }
+  });
+
+  // Close modal on close button
+  modalClose.addEventListener('click', hideModal);
+
+  // Track CTA click (optional: could add analytics here)
+  modalCTA.addEventListener('click', () => {
+    // Modal will stay open, user opens Instagram in new tab
+    // They can manually close it after
+  });
 });

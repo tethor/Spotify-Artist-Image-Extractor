@@ -94,6 +94,16 @@ h1 {
   transform: rotate(-2deg);
 }
 
+.brand-tag {
+  margin-top: 15px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #000;
+  opacity: 0.8;
+}
+
 /* Main Content */
 main {
   padding: 40px 20px;
@@ -436,8 +446,32 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
   flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.footer-brand,
+.footer-social {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-divider {
+  color: var(--accent-primary);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.footer-tagline {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  font-weight: bold;
+  letter-spacing: 1px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.3);
 }
 
 .brand-link,
@@ -455,4 +489,232 @@ footer {
   color: #000;
   box-shadow: 4px 4px 0px #fff;
   transform: translate(-2px, -2px);
+}
+
+/* Instagram Modal */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease;
+  backdrop-filter: blur(4px);
+}
+
+.modal-overlay.show {
+  display: flex;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-container {
+  background: #fff;
+  border: var(--border-width) solid #000;
+  box-shadow: 12px 12px 0px #000;
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  animation: slideUp 0.4s ease;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #000;
+  color: #fff;
+  border: none;
+  width: 35px;
+  height: 35px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  font-family: var(--font-main);
+  font-weight: bold;
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.modal-close:hover {
+  background: var(--accent-secondary);
+  transform: rotate(90deg);
+}
+
+.modal-header {
+  background: var(--accent-primary);
+  border-bottom: var(--border-width) solid #000;
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.modal-header h2 {
+  font-size: 2.5rem;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+  margin-bottom: 10px;
+  line-height: 1;
+}
+
+.modal-subtitle {
+  background: #000;
+  color: #fff;
+  display: inline-block;
+  padding: 5px 15px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transform: rotate(-1deg);
+  font-size: 0.9rem;
+}
+
+.modal-body {
+  padding: 30px 25px;
+}
+
+.modal-intro {
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.modal-benefits {
+  list-style: none;
+  margin-bottom: 30px;
+  border: var(--border-width) solid #000;
+  background: #f9f9f9;
+  padding: 20px;
+}
+
+.modal-benefits li {
+  padding: 12px 10px;
+  margin-bottom: 10px;
+  background: #fff;
+  border: 2px solid #000;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+  position: relative;
+  padding-left: 15px;
+}
+
+.modal-benefits li:last-child {
+  margin-bottom: 0;
+}
+
+.modal-benefits li:hover {
+  transform: translateX(5px);
+  background: var(--accent-tertiary);
+  box-shadow: 4px 4px 0px #000;
+}
+
+.modal-cta {
+  display: block;
+  width: 100%;
+  padding: 18px;
+  background: var(--accent-secondary);
+  color: #fff;
+  border: var(--border-width) solid #000;
+  text-align: center;
+  font-family: var(--font-main);
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 6px 6px 0px #000;
+  text-decoration: none;
+  margin-bottom: 20px;
+}
+
+.modal-cta:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 9px 9px 0px #000;
+  background: #000;
+  color: var(--accent-primary);
+}
+
+.modal-checkbox {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  justify-content: center;
+  gap: 8px;
+}
+
+.modal-checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #000;
+  cursor: pointer;
+  appearance: none;
+  background: #fff;
+  position: relative;
+}
+
+.modal-checkbox input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  top: -2px;
+  left: 2px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #000;
+}
+
+.modal-checkbox:hover input[type="checkbox"] {
+  background: var(--accent-primary);
+}
+
+/* Responsive Modal */
+@media (max-width: 600px) {
+  .modal-container {
+    width: 95%;
+    box-shadow: 8px 8px 0px #000;
+  }
+
+  .modal-header h2 {
+    font-size: 2rem;
+  }
+
+  .modal-benefits li {
+    font-size: 0.75rem;
+    padding: 10px 8px;
+  }
+
+  .modal-cta {
+    font-size: 1rem;
+    padding: 15px;
+  }
 }
