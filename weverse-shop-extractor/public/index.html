@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WEVERSE SHOP EXTRACTOR // V1.0</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload"
+        href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" as="style"
+        onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript>
+        <link rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" />
+    </noscript>
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="Weverse Shop Extractor // Herramienta de Extracción de Imágenes" />
+    <meta property="og:description"
+        content="Extrae imágenes de productos K-pop en alta calidad desde Weverse Shop. Diseño Neo-Brutalista. Gratis y Open Source." />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Weverse Shop Extractor // Herramienta de Extracción" />
+    <meta name="twitter:description" content="Extrae imágenes de productos K-pop desde Weverse Shop." />
+
+    <!-- SEO & Canonical -->
+    <meta name="keywords"
+        content="weverse shop, kpop productos, lightstick, extraer imagen producto, weverse extractor, pocapay, kpop" />
+    <meta name="robots" content="index, follow" />
+    <meta name="description"
+        content="Extrae imágenes de productos K-pop en alta calidad desde Weverse Shop. Herramienta gratuita por POCAPAY GO para la comunidad K-POP." />
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="lang-switch">
+                <button id="langBtn" class="lang-btn">ES/EN</button>
+            </div>
+            <h1 data-i18n="title">Weverse Shop<br />Extractor</h1>
+            <div class="subtitle" data-i18n="subtitle">
+                Herramienta de Extracción
+            </div>
+            <div class="brand-tag" data-i18n="brand_tag">
+                POR POCAPAY GO // HERRAMIENTAS K-POP GRATIS
+            </div>
+        </header>
+
+        <main>
+            <section class="input-section">
+                <div class="input-group">
+                    <input type="text" id="searchQuery" placeholder="BUSCAR PRODUCTO (EJ: BLACKPINK LIGHTSTICK) O URL DEL PRODUCTO..."
+                        autocomplete="off" data-i18n-placeholder="input_placeholder" />
+                    <button id="extractBtn" data-i18n="extract_btn">
+                        EXTRAER IMAGEN
+                    </button>
+                </div>
+
+                <div class="instructions">
+                    <h3 data-i18n="instructions_title">// INSTRUCCIONES</h3>
+                    <ul>
+                        <li data-i18n="instr_1">
+                            ESCRIBE EL NOMBRE DEL PRODUCTO QUE BUSCAS...
+                        </li>
+                        <li data-i18n="instr_2">
+                            EJEMPLO: "BLACKPINK LIGHTSTICK" O URL DEL PRODUCTO
+                        </li>
+                        <li data-i18n="instr_3">EJECUTAR EXTRACCIÓN</li>
+                    </ul>
+                    <p style="
+                                margin-top: 15px;
+                                font-size: 0.8rem;
+                                text-transform: uppercase;
+                            ">
+                        <strong data-i18n="note_label">NOTA:</strong>
+                        <span data-i18n="note_text">LA EXTRACCIÓN USA NAVEGADOR HEADLESS. PUEDE SER MÁS LENTO.</span>
+                    </p>
+                    <p style="
+                                margin-top: 10px;
+                                font-size: 0.8rem;
+                                border-top: 1px dashed #000;
+                                padding-top: 10px;
+                            ">
+                        <strong data-i18n="example_label">EJEMPLO:</strong>
+                        <code style="
+                                    display: block;
+                                    margin-top: 5px;
+                                    word-break: break-all;
+                                    cursor: pointer;
+                                " id="exampleQuery"
+                            title="Click to copy">blackpink lightstick</code>
+                    </p>
+                </div>
+            </section>
+
+            <div class="loading" id="loading" data-i18n="loading">
+                // PROCESANDO PETICIÓN...
+            </div>
+
+            <div class="error" id="error"></div>
+
+            <section class="result-section" id="resultSection">
+                <div class="product-info">
+                    <h2 class="product-name" id="productName"></h2>
+                    <p class="product-details" id="productDetails"></p>
+                    <a class="product-link" id="productLink" href="#" target="_blank" style="display: none;">Ver en Weverse Shop</a>
+                </div>
+                <div class="product-image-container" id="imageContainer"></div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span data-i18n="brought_by">TRAÍDO POR</span>
+                    <a href="https://pocapay.com" target="_blank" class="brand-link">
+                        POCAPAY GO
+                    </a>
+                </div>
+                <div class="footer-social">
+                    <span data-i18n="follow_us">SÍGUENOS</span>
+                    <a href="https://www.instagram.com/pocapay_mx/" target="_blank" class="social-link">
+                        @POCAPAY_MX
+                    </a>
+                </div>
+            </div>
+            <div class="footer-tagline" data-i18n="footer_tagline">
+                HERRAMIENTAS GRATIS PARA LA COMUNIDAD K-POP 💜
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
+
