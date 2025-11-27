@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const translations = {
     en: {
       title: 'Spotify<br>Extractor',
-      subtitle: 'Image Extraction Tool',
+      subtitle: 'Free Image Extraction Tool',
       input_placeholder: 'TYPE ARTIST NAME OR PASTE URL...',
       extract_btn: 'EXTRACT IMAGE',
       mobile_option: 'Mobile (Profile)',
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
       instr_2: 'SELECT IMAGE TYPE',
       instr_3: 'EXECUTE EXTRACTION',
       note_label: 'NOTE:',
-      note_text: 'DESKTOP EXTRACTION USES HEADLESS BROWSER. MAY BE SLOWER.',
+      note_text: 'DESKTOP EXTRACTION IS MORE POWERFUL BUT MAY TAKE A FEW SECONDS LONGER. PLEASE BE PATIENT!',
       example_label: 'EXAMPLE URL:',
       loading: '// PROCESSING REQUEST...',
       error_url: 'Please enter a URL or Artist Name',
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
       local_fallback: 'LOCAL SCRAPER (FALLBACK)',
       genres: 'GENRES',
       followers: 'FOLLOWERS',
-      brand_tag: 'BY POCAPAY GO // FREE K-POP TOOLS',
+      brand_tag: 'BY POCAPAY GO',
       brought_by: 'BROUGHT TO YOU BY',
       follow_us: 'FOLLOW US',
       footer_tagline: 'FREE TOOLS FOR THE K-POP COMMUNITY 💜',
@@ -52,15 +52,14 @@ document.addEventListener('DOMContentLoaded', function () {
       benefit_4: '📦 SHIPPING ACROSS MEXICO',
       modal_cta: 'FOLLOW @POCAPAY_MX',
       modal_dont_show: "DON'T SHOW THIS AGAIN",
-      // Nuevas traducciones para meta tags
+      // New translations for meta tags
       page_title: 'SPOTIFY_EXTRACTOR // V1.0',
       og_title: 'Spotify Extractor // Image Extraction Tool',
       og_description: 'Extract high-quality artist images (Profile and Banner) from Spotify. Neo-Brutalist Design. Free and Open Source.',
-      twitter_title: 'Spot Extractor // Image Extraction Tool',
+      twitter_title: 'Spotify Extractor // Image Extraction Tool',
       twitter_description: 'Extract artist images from Spotify. Mobile and Desktop Support.',
       seo_keywords: 'spotify download image, spotify artist image, spotify banner extractor, download spotify cover, spotify tools, pocapay, kpop',
       meta_description: 'Extract high-quality artist images from Spotify. Free tool by POCAPAY GO for the K-POP community.',
-      // New translations
       loading_mobile: '// GETTING PROFILE IMAGE...',
       loading_desktop: '// EXTRACTING BANNER (MAY TAKE A WHILE)...',
       error_invalid_url: 'Please enter a valid Spotify URL or artist name',
@@ -68,11 +67,12 @@ document.addEventListener('DOMContentLoaded', function () {
       clipboard_ready: 'URL READY TO COPY!',
       image_alt_mobile: 'Mobile image',
       image_alt_desktop: 'Desktop image',
-      banner_fallback: 'BANNER'
+      banner_fallback: 'BANNER',
+      artist_search_btn: 'Do you like this artist? Search their albums here'
     },
     es: {
       title: 'Spotify<br>Extractor',
-      subtitle: 'Herramienta de Extracción',
+      subtitle: 'Herramienta de Extracción gratis',
       input_placeholder: 'ESCRIBE NOMBRE DEL ARTISTA O PEGA URL...',
       extract_btn: 'EXTRAER IMAGEN',
       mobile_option: 'Móvil (Perfil)',
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
       instr_2: 'SELECCIONA TIPO DE IMAGEN',
       instr_3: 'EJECUTAR EXTRACCIÓN',
       note_label: 'NOTA:',
-      note_text: 'EXTRACCIÓN DE ESCRITORIO USA NAVEGADOR HEADLESS. PUEDE SER MÁS LENTO.',
+      note_text: 'LA EXTRACCIÓN DE ESCRITORIO ES MÁS POTENTE PERO PUEDE TARDAR UNOS SEGUNDOS MÁS. ¡TEN PACIENCIA!.',
       example_label: 'URL EJEMPLO:',
       loading: '// PROCESANDO PETICIÓN...',
       error_url: 'Por favor ingresa una URL o Nombre',
@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function () {
       local_fallback: 'SCRAPER LOCAL (FALLBACK)',
       genres: 'GÉNEROS',
       followers: 'SEGUIDORES',
-      brand_tag: 'POR POCAPAY GO // HERRAMIENTAS K-POP GRATIS',
+      brand_tag: 'POR POCAPAY GO',
       brought_by: 'TRAÍDO POR',
       follow_us: 'SÍGUENOS',
       footer_tagline: 'HERRAMIENTAS GRATIS PARA LA COMUNIDAD K-POP 💜',
@@ -118,7 +118,6 @@ document.addEventListener('DOMContentLoaded', function () {
       twitter_description: 'Extrae imágenes de artistas desde Spotify. Soporte Móvil y Escritorio.',
       seo_keywords: 'spotify descargar imagen, spotify imagen artista, spotify banner extractor, descargar portada spotify, herramientas spotify, pocapay, kpop',
       meta_description: 'Extrae imágenes de artistas en alta calidad desde Spotify. Herramienta gratuita por POCAPAY GO para la comunidad K-POP.',
-      // Nuevas traducciones
       loading_mobile: '// OBTENIENDO IMAGEN DE PERFIL...',
       loading_desktop: '// EXTRAYENDO BANNER (PUEDE TARDAR)...',
       error_invalid_url: 'Por favor ingresa una URL de Spotify válida o nombre de artista',
@@ -126,7 +125,8 @@ document.addEventListener('DOMContentLoaded', function () {
       clipboard_ready: '¡URL LISTA PARA COPIAR!',
       image_alt_mobile: 'Imagen Móvil',
       image_alt_desktop: 'Imagen Escritorio',
-      banner_fallback: 'BANNER'
+      banner_fallback: 'BANNER',
+      artist_search_btn: '¿Te gusta este artista? Busca sus álbumes aquí'
     }
   };
 
@@ -382,6 +382,15 @@ document.addEventListener('DOMContentLoaded', function () {
     imageCard.appendChild(img);
     imageCard.appendChild(metaDiv);
     imageCard.appendChild(downloadBtn);
+
+    // Nuevo botón para buscar álbumes
+    const searchAlbumsBtn = document.createElement('a');
+    searchAlbumsBtn.className = 'search-albums-btn';
+    searchAlbumsBtn.textContent = t.artist_search_btn;
+    searchAlbumsBtn.href = `https://pocapay.com/artistas/${encodeURIComponent(artistName)}`;
+    searchAlbumsBtn.target = '_blank';
+    
+    imageCard.appendChild(searchAlbumsBtn);
 
     // Method Badge
     const methodBadge = document.createElement('div');

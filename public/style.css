@@ -389,6 +389,32 @@ button:disabled {
   background: #fff;
 }
 
+.search-albums-btn {
+  display: block;
+  width: 100%;
+  padding: 12px 15px;
+  background: var(--accent-secondary);
+  border: var(--border-width) solid #000;
+  color: #fff;
+  font-family: var(--font-main);
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+  box-shadow: 4px 4px 0px #000;
+  text-decoration: none;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.search-albums-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px #000;
+  background: #000;
+  color: var(--accent-secondary);
+}
+
 .method-badge {
   display: inline-block;
   margin-top: 15px;
@@ -597,6 +623,12 @@ button:disabled {
     border-radius: 4px;
   }
 
+  .search-albums-btn {
+    padding: 8px 10px;
+    font-size: 0.7rem;
+    margin-top: 6px;
+  }
+
   /* Loading and Error States */
   .loading {
     font-size: 0.9rem;
@@ -720,6 +752,11 @@ button:disabled {
     font-size: 0.85rem;
   }
 
+  .search-albums-btn {
+    padding: 10px 12px;
+    font-size: 0.8rem;
+  }
+
   /* Footer overrides removed to rely on Mobile-First base styles */
 }
 
@@ -786,6 +823,11 @@ button:disabled {
     font-size: 0.9rem;
   }
 
+  .search-albums-btn {
+    padding: 11px 14px;
+    font-size: 0.85rem;
+  }
+
   .footer-content {
     font-size: 0.9rem;
   }
@@ -820,6 +862,11 @@ button:disabled {
   .artist-name {
     font-size: 2.5rem;
     padding: 15px 20px;
+  }
+
+  .search-albums-btn {
+    padding: 12px 16px;
+    font-size: 0.9rem;
   }
 
   .footer-content {
