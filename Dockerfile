@@ -34,8 +34,7 @@ RUN npm ci --omit=dev --no-audit --no-fund
 COPY . .
 
 ENV NODE_ENV=production
-ENV PORT=3002
 
-EXPOSE 3002
+EXPOSE 3000
 
 CMD ["node", "server.js"]
